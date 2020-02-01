@@ -37,5 +37,6 @@ STATUE OF FELICY（自由菲神像）：
 
 Todo:
 
-1.sleepify other creatures using inst.components.sleeper:AddSleepiness(sleepiness, sleeptime) see prefabs/panflute
-2.Find RED methods
+-Find a mod with a new meter to learn adding vitality meter. See widgets/BeaverBadge, statusdisplay for some clues
+-sleepify other creatures using inst.components.sleeper:AddSleepiness(sleepiness, sleeptime) see prefabs/panflute
+-Find RED methods

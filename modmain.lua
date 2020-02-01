@@ -41,7 +41,7 @@ local require = GLOBAL.require
 local STRINGS = GLOBAL.STRINGS
 
 -- The character select screen lines
-STRINGS.CHARACTER_TITLES.fefe = "The Sleep Master"
+STRINGS.CHARACTER_TITLES.fefe = "睡觉达人"
 STRINGS.CHARACTER_NAMES.fefe = "fefe"
 STRINGS.CHARACTER_DESCRIPTIONS.fefe = "*Perk 1\n*Perk 2\n*Perk 3"
 STRINGS.CHARACTER_QUOTES.fefe = "\"让我再睡一会儿\""
