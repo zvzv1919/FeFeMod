@@ -1,0 +1,41 @@
+VITALITY（活力值）:
++high hunger
++low san
+-high san
+++at night
+-during day
+--when sleeping
+-during extreme temperature
+-when hitting/getting hit
+-------------------------------
+yawn at low vitality
+quote 'I gotta sleep' at low vitality
+appearance change when switching between high/low vitality
+
+PILLOW:
+-maxvitality when equipped
++maxvitality when unequipped
+low dmg, has a chance to sleepify
+can be upgraded to furry pillow(aoe, lower dmg), golden pillow(higher dmg and #uses)**optional, ice pillow(higher
+chance) and eternal pillow(combination)
+
+PILLS:
+-healing pill（治疗药丸）: -san, +hp regen
+-hallucinogen pill (摇头丸）: -san, +san regen, prevents yawning, prevents sleep, shakes head
+
+STATUE OF FELICY（自由菲神像）：
+-boosts maximum san for each item built
+-yellow_sunflower: +illumination, +movespeed, -wetnessproof
+-orange_orange: +maxhealth, grows orange, +agility, -cold resist
+-green_minimelon: +dmg, grows melon**optional, +swing speed, -warm resist
+
+
+
+
+
+
+
+Todo:
+
+1.sleepify other creatures using inst.components.sleeper:AddSleepiness(sleepiness, sleeptime) see prefabs/panflute
+2.Find RED methods

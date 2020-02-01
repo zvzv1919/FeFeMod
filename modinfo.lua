@@ -1,7 +1,7 @@
 -- This information tells other players more about the mod
-name = "Extended Sample Character"
-description = "A character template for Don't Starve Together."
-author = "Dragon Wolf Leo"
+name = "FeFe"
+description = "Adds FeFe as a playable character for the game Don't Starve Together."
+author = "zvzv1919 & fefe"
 version = "1.2.5" -- This is the version of the template. Change it to your own number.
 
 -- This is the URL name of the mod's thread on the forum; the part after the ? and before the first & in the url
