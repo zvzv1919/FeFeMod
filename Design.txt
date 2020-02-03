@@ -40,3 +40,4 @@ Todo:
 -Find a mod with a new meter to learn adding vitality meter. See widgets/BeaverBadge, statusdisplay for some clues
 -sleepify other creatures using inst.components.sleeper:AddSleepiness(sleepiness, sleeptime) see prefabs/panflute
 -Find RED methods
+-AddClassPostConstruct can be used for altering widgets

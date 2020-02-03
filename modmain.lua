@@ -37,8 +37,61 @@ Assets = {
 
 AddMinimapAtlas("images/map_icons/fefe.xml")
 
+
 local require = GLOBAL.require
 local STRINGS = GLOBAL.STRINGS
+
+--Adds the vitality meter
+local function StatusPostConstruct(self)
+    local VitalityBadge = require "widgets/vitalitybadge"
+    local HungerBadge = require "widgets/hungerbadge"
+
+    self.fefebrain = self:AddChild(HungerBadge(self.owner))
+    self.fefebrain:SetPosition(80, -40, 0)
+    self.onvitalitydelta = nil
+
+    local oldShowStatusNumbers=self.ShowStatusNumbers
+    self.ShowStatusNumbers=function(self)
+        oldShowStatusNumbers(self)
+        self.fefebrain.num:Show()
+    end
+
+    local oldHideStatusNumbers=self.HideStatusNumbers
+    self.HideStatusNumbers=function(self)
+        oldHideStatusNumbers(self)
+        self.fefebrain.num:Hide()
+    end
+
+    local oldSetHungerPercent=self.SetHungerPercent
+    self.SetHungerPercent=function(self,pct)
+        oldSetHungerPercent(self,pct)
+        self.fefebrain:SetPercent(pct, self.owner.replica.hunger:Max())
+
+        if pct <= 0 then
+            self.fefebrain:StartWarning()
+        else
+            self.fefebrain:StopWarning()
+        end
+    end
+
+    local oldHungerDelta=self.HungerDelta
+    function self:HungerDelta(data)
+        oldHungerDelta(self,data)
+        if not data.overtime then
+            if data.newpercent > data.oldpercent then
+                self.fefebrain:PulseGreen()
+                TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/hunger_up")
+            elseif data.newpercent < data.oldpercent then
+                TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/hunger_down")
+                self.fefebrain:PulseGreen()
+            end
+        end
+    end
+
+end
+
+
+AddClassPostConstruct("widgets/statusdisplays", StatusPostConstruct)
 
 -- The character select screen lines
 STRINGS.CHARACTER_TITLES.fefe = "睡觉达人"
