@@ -46,8 +46,8 @@ local function StatusPostConstruct(self)
     local VitalityBadge = require "widgets/vitalitybadge"
     local HungerBadge = require "widgets/hungerbadge"
 
-    self.fefebrain = self:AddChild(HungerBadge(self.owner))
-    self.fefebrain:SetPosition(80, -40, 0)
+    self.fefebrain = self:AddChild(VitalityBadge(self.owner))
+    self.fefebrain:SetPosition(-80, -40, 0)
     self.onvitalitydelta = nil
 
     local oldShowStatusNumbers=self.ShowStatusNumbers

@@ -2,7 +2,7 @@ local Badge = require "widgets/badge"
 local UIAnim = require "widgets/uianim"
 
 local VitalityBadge = Class(Badge, function(self, owner)
-    Badge._ctor(self, nil, owner, { 255 / 255, 204 / 255, 51 / 255, 1 }, "status_hunger")
+    Badge._ctor(self, nil, owner, { 0 / 255, 0 / 255, 0 / 255, 1 }, "status_sanity")
 
     self.hungerarrow = self.underNumber:AddChild(UIAnim())
     self.hungerarrow:GetAnimState():SetBank("sanity_arrow")
@@ -13,7 +13,7 @@ local VitalityBadge = Class(Badge, function(self, owner)
     self:StartUpdating()
 end)
 
---TODO:delete the following function
+--TODO:change the following function(check sanitybadge)
 function VitalityBadge:OnUpdate(dt)
     local anim = "neutral"
     if  self.owner ~= nil and
