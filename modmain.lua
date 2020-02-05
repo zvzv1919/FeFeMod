@@ -33,6 +33,8 @@ Assets = {
 	
 	Asset( "IMAGE", "images/names_gold_fefe.tex" ),
     Asset( "ATLAS", "images/names_gold_fefe.xml" ),
+
+    Asset("ANIM", "anim/status_vitality.zip"),
 }
 
 AddMinimapAtlas("images/map_icons/fefe.xml")
