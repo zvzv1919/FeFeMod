@@ -1,12 +1,12 @@
 VITALITY（活力值）:
-+high hunger
-+low san
--high san
-++at night
--during day
---when sleeping
--during extreme temperature
--when hitting/getting hit
+-high hunger
+-low san
+--at night
++during day
+++when sleeping
++when hitting/getting hit
++++during extreme temperature
+
 -------------------------------
 yawn at low vitality
 quote 'I gotta sleep' at low vitality
@@ -16,6 +16,8 @@ PILLOW:
 -maxvitality when equipped
 +maxvitality when unequipped
 low dmg, has a chance to sleepify
+provides med insulation
+can be repaired
 can be upgraded to furry pillow(aoe, lower dmg), golden pillow(higher dmg and #uses)**optional, ice pillow(higher
 chance) and eternal pillow(combination)
 
@@ -39,6 +41,11 @@ Todo:
 
 -sleepify other creatures using inst.components.sleeper:AddSleepiness(sleepiness, sleeptime) see prefabs/panflute
 -Find RED methods
+-component/fueled can be used to achieve the reparable attribute. check prefab/hats for example
 -AddClassPostConstruct can be used for altering widgets
 -Check 'scripts/recipes.lua' for info on new tech tree
 -components/vitality
+-add vitality arrows (check sanity.onupdate())
+-which one calls sanity:recalc()? -Sanity:Longupdate()? -entityscript:LongUpdate()?
+-make vitality badge compatible with the boatmeter
+-light effect see preparedfoods_warly.glowberrymousse

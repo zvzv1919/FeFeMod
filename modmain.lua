@@ -64,32 +64,32 @@ local function StatusPostConstruct(self)
         self.fefebrain.num:Hide()
     end
 
-    local oldSetHungerPercent=self.SetHungerPercent
-    self.SetHungerPercent=function(self,pct)
-        oldSetHungerPercent(self,pct)
-        self.fefebrain:SetPercent(pct, self.owner.replica.hunger:Max())
+    local oldSetSanityPercent=self.SetSanityPercent
+    self.SetSanityPercent=function(self,pct)
+        oldSetSanityPercent(self, pct)
+        self.fefebrain:SetPercent(pct, self.owner.replica.sanity:Max(), self.owner.replica.sanity:GetPenaltyPercent())
 
-        if pct <= 0 then
+        if self.owner.replica.sanity:IsInsane() or self.owner.replica.sanity:IsEnlightened() then
             self.fefebrain:StartWarning()
         else
             self.fefebrain:StopWarning()
         end
     end
 
-    local oldHungerDelta=self.HungerDelta
-    function self:HungerDelta(data)
-        oldHungerDelta(self,data)
+    local oldSanityDelta=self.SanityDelta
+    function self:SanityDelta(data)
+        oldSanityDelta(self, data)
+
         if not data.overtime then
             if data.newpercent > data.oldpercent then
                 self.fefebrain:PulseGreen()
-                TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/hunger_up")
+                TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/sanity_up")
             elseif data.newpercent < data.oldpercent then
-                TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/hunger_down")
-                self.fefebrain:PulseGreen()
+                self.fefebrain:PulseRed()
+                TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/sanity_down")
             end
         end
     end
-
 end
 
 
