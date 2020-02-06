@@ -46,6 +46,7 @@ Todo:
 -Check 'scripts/recipes.lua' for info on new tech tree
 -components/vitality
 -add vitality arrows (check sanity.onupdate())
--which one calls sanity:recalc()? -Sanity:Longupdate()? -entityscript:LongUpdate()?
+-which one calls sanity:recalc()? -Sanity:Longupdate()? -entityscript:LongUpdate()? also check
+updatelooper:addlongupdatefn()
 -make vitality badge compatible with the boatmeter
 -light effect see preparedfoods_warly.glowberrymousse

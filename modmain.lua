@@ -48,47 +48,142 @@ local function StatusPostConstruct(self)
     local VitalityBadge = require "widgets/vitalitybadge"
     local HungerBadge = require "widgets/hungerbadge"
 
-    self.fefebrain = self:AddChild(VitalityBadge(self.owner))
-    self.fefebrain:SetPosition(-80, -40, 0)
-    self.onvitalitydelta = nil
+    local function OnSetPlayerModeFefe(inst, self)
+        self.modetaskfefe=nil
+        if self.fefebrain ~= nil and self.onvitalitydelta == nil then
+            self.onvitalitydelta = function(owner, data) self:VitalityDelta(data) end
+            self.inst:ListenForEvent("vitalitydelta", self.onvitalitydelta, self.owner)
+            self:SetVitalityPercent(100)
+        end
+    end
+    local function OnSetGhostModeFefe(inst, self)
+        self.modetaskfefe=nil
+        if self.onvitalitydelta ~= nil then
+            self.inst:RemoveEventCallback("vitalitydelta", self.onvitalitydelta, self.owner)
+            self.onvitalitydelta = nil
+        end
+    end
+
+
+    function self:AddVitality()
+        if self.fefebrain == nil then
+            self.fefebrain = self:AddChild(VitalityBadge(self.owner))
+            self.fefebrain:SetPosition(-80, -40, 0)
+--            TODO:vitalitydelta(data), GetVitality(),SetVitalityPercent() change "sanitydelta" to "vitalitydelta"
+            if self.isghostmode then
+                self.fefebrain:Hide()
+            elseif self.modetask == nil and self.onvitalitydelta == nil then
+                    self.onvitalitydelta = function(owner, data) self:VitalityDelta(data) end
+                self.inst:ListenForEvent("vitalitydelta", self.onvitalitydelta, self.owner)
+                self:SetVitalityPercent(100)
+            end
+        end
+    end
+
+    function self:RemoveVitality()
+        if self.fefebrain ~= nil then
+            if self.onvitalitydelta ~= nil then
+                self.inst:RemoveEventCallback("vitalitydelta", self.onvitalitydelta, self.owner)
+                self.onvitalitydelta = nil
+            end
+
+            self.fefebrain:Kill()
+            self.fefebrain = nil
+        end
+    end
+
+    local oldSetGhostMode=self.SetGhostMode
+    self.SetGhostMode=function(self, ghostmode)
+        oldSetGhostMode(self, ghostmode)
+        if ghostmode then
+            if self.owner:HasTag("vitality") then
+                self.fefebrain:Hide()
+                self.fefebrain:StopWarning()
+            end
+        else
+            if self.owner:HasTag("vitality") then
+                self.fefebrain:Show()
+            end
+        end
+
+        if self.modetaskfefe ~= nil then
+            self.modetaskfefe:Cancel()
+        end
+        self.modetaskfefe = self.inst:DoTaskInTime(0, ghostmode and OnSetGhostModeFefe or OnSetPlayerModeFefe, self)
+    end
 
     local oldShowStatusNumbers=self.ShowStatusNumbers
     self.ShowStatusNumbers=function(self)
         oldShowStatusNumbers(self)
         self.fefebrain.num:Show()
+        if self.fefebrain ~= nil then
+            self.fefebrain.num:Show()
+        end
     end
 
     local oldHideStatusNumbers=self.HideStatusNumbers
     self.HideStatusNumbers=function(self)
         oldHideStatusNumbers(self)
         self.fefebrain.num:Hide()
-    end
-
-    local oldSetSanityPercent=self.SetSanityPercent
-    self.SetSanityPercent=function(self,pct)
-        oldSetSanityPercent(self, pct)
-        self.fefebrain:SetPercent(pct, self.owner.replica.sanity:Max(), self.owner.replica.sanity:GetPenaltyPercent())
-
-        if self.owner.replica.sanity:IsInsane() or self.owner.replica.sanity:IsEnlightened() then
-            self.fefebrain:StartWarning()
-        else
-            self.fefebrain:StopWarning()
+        if self.fefebrain ~= nil then
+            self.fefebrain.num:Hide()
         end
     end
 
-    local oldSanityDelta=self.SanityDelta
-    function self:SanityDelta(data)
-        oldSanityDelta(self, data)
+--TODO:Remove the redundant if statement
+--    local oldSetSanityPercent=self.SetSanityPercent
+    self.SetVitalityPercent=function(self,pct)
+--        oldSetSanityPercent(self, pct)
+        if self.owner:HasTag("vitality") then
+            self.fefebrain:SetPercent(pct, self.owner.replica.sanity:Max(), self.owner.replica.sanity:GetPenaltyPercent())
 
-        if not data.overtime then
-            if data.newpercent > data.oldpercent then
-                self.fefebrain:PulseGreen()
-                TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/sanity_up")
-            elseif data.newpercent < data.oldpercent then
-                self.fefebrain:PulseRed()
-                TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/sanity_down")
+            if self.owner.replica.sanity:IsInsane() or self.owner.replica.sanity:IsEnlightened() then
+                self.fefebrain:StartWarning()
+            else
+                self.fefebrain:StopWarning()
             end
         end
+    end
+
+--    local oldSanityDelta=self.SanityDelta
+--    function self:SanityDelta(data)
+--        oldSanityDelta(self,data)
+--       self:VitalityDelta(data)
+--        if self.owner:HasTag("vitality") then
+--            if not data.overtime then
+--                if data.newpercent > data.oldpercent then
+--                    self.fefebrain:PulseGreen()
+--                    TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/sanity_up")
+--                elseif data.newpercent < data.oldpercent then
+--                    self.fefebrain:PulseRed()
+--                    TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/sanity_down")
+--                end
+--            end
+--        end
+--    end
+
+    function self:VitalityDelta(data)
+        self:SetVitalityPercent(data.newpercent)
+--        oldSanityDelta(self,data)
+        if self.owner:HasTag("vitality") then
+            if not data.overtime then
+                if data.newpercent > data.oldpercent then
+                    self.fefebrain:PulseGreen()
+                    TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/sanity_up")
+                elseif data.newpercent < data.oldpercent then
+                    self.fefebrain:PulseRed()
+                    TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/sanity_down")
+                end
+            end
+        end
+    end
+
+    self.fefebrain=nil
+    self.onvitalitydelta=nil
+    self.modetaskfefe=nil --for initialization when entering the game scene
+
+    if self.owner:HasTag("vitality") then
+        self:AddVitality()
     end
 end
 
