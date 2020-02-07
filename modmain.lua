@@ -46,16 +46,17 @@ local STRINGS = GLOBAL.STRINGS
 --Adds the vitality meter
 local function StatusPostConstruct(self)
     local VitalityBadge = require "widgets/vitalitybadge"
-    local HungerBadge = require "widgets/hungerbadge"
+--    local HungerBadge = require "widgets/hungerbadge"
 
     local function OnSetPlayerModeFefe(inst, self)
         self.modetaskfefe=nil
         if self.fefebrain ~= nil and self.onvitalitydelta == nil then
             self.onvitalitydelta = function(owner, data) self:VitalityDelta(data) end
             self.inst:ListenForEvent("vitalitydelta", self.onvitalitydelta, self.owner)
-            self:SetVitalityPercent(100)
+            self:SetVitalityPercent(1)
         end
     end
+
     local function OnSetGhostModeFefe(inst, self)
         self.modetaskfefe=nil
         if self.onvitalitydelta ~= nil then
@@ -63,7 +64,6 @@ local function StatusPostConstruct(self)
             self.onvitalitydelta = nil
         end
     end
-
 
     function self:AddVitality()
         if self.fefebrain == nil then
@@ -75,7 +75,7 @@ local function StatusPostConstruct(self)
             elseif self.modetask == nil and self.onvitalitydelta == nil then
                     self.onvitalitydelta = function(owner, data) self:VitalityDelta(data) end
                 self.inst:ListenForEvent("vitalitydelta", self.onvitalitydelta, self.owner)
-                self:SetVitalityPercent(100)
+                self:SetVitalityPercent(self.owner:GetVitality())
             end
         end
     end
@@ -101,7 +101,7 @@ local function StatusPostConstruct(self)
                 self.fefebrain:StopWarning()
             end
         else
-            if self.owner:HasTag("vitality") then
+            if self.owner:HasTag("vitality") ~= nil then
                 self.fefebrain:Show()
             end
         end
@@ -134,15 +134,13 @@ local function StatusPostConstruct(self)
 --    local oldSetSanityPercent=self.SetSanityPercent
     self.SetVitalityPercent=function(self,pct)
 --        oldSetSanityPercent(self, pct)
-        if self.owner:HasTag("vitality") then
-            self.fefebrain:SetPercent(pct, self.owner.replica.sanity:Max(), self.owner.replica.sanity:GetPenaltyPercent())
+        self.fefebrain:SetPercent(pct, self.owner:GetMaxVitality(), self.owner:GetVitalityPenalty())
 
             if self.owner.replica.sanity:IsInsane() or self.owner.replica.sanity:IsEnlightened() then
                 self.fefebrain:StartWarning()
             else
                 self.fefebrain:StopWarning()
             end
-        end
     end
 
 --    local oldSanityDelta=self.SanityDelta
@@ -165,15 +163,13 @@ local function StatusPostConstruct(self)
     function self:VitalityDelta(data)
         self:SetVitalityPercent(data.newpercent)
 --        oldSanityDelta(self,data)
-        if self.owner:HasTag("vitality") then
-            if not data.overtime then
-                if data.newpercent > data.oldpercent then
-                    self.fefebrain:PulseGreen()
-                    TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/sanity_up")
-                elseif data.newpercent < data.oldpercent then
-                    self.fefebrain:PulseRed()
-                    TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/sanity_down")
-                end
+        if not data.overtime then
+            if data.newpercent > data.oldpercent then
+                self.fefebrain:PulseGreen()
+                TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/sanity_up")
+            elseif data.newpercent < data.oldpercent then
+                self.fefebrain:PulseRed()
+                TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/sanity_down")
             end
         end
     end
@@ -182,11 +178,11 @@ local function StatusPostConstruct(self)
     self.onvitalitydelta=nil
     self.modetaskfefe=nil --for initialization when entering the game scene
 
+--    self:AddVitality()
     if self.owner:HasTag("vitality") then
         self:AddVitality()
     end
 end
-
 
 AddClassPostConstruct("widgets/statusdisplays", StatusPostConstruct)
 

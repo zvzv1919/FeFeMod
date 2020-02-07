@@ -37,13 +37,43 @@ local function onload(inst)
     end
 end
 
+local function GetVitality(inst)
+    if inst.components.vitality ~= nil then
+        return inst.components.vitality:GetPercent()
+        --    elseif inst.player_classified ~= nil then
+        --        return inst.player_classified.currentwereness:value() * .01
+    else
+        return 0
+--        return inst.components.vitality:GetPercent()
+    end
+end
+
+local function GetMaxVitality(inst)
+    if inst.components.vitality ~= nil then
+        return inst.components.vitality:Max()
+    end
+--    return inst.components.vitality:Max()
+end
+
+local function GetVitalityPenalty(inst)
+    if inst.components.vitality ~= nil then
+        return inst.components.vitality:GetPenaltyPercent()
+    end
+--    return inst.components.vitality:GetPenaltyPercent()
+end
 
 -- This initializes for both the server and client. Tags can be added here.
 local common_postinit = function(inst) 
 	-- Minimap icon
 	inst.MiniMapEntity:SetIcon( "fefe.tex" )
 	inst:AddTag("vitality")
+
+    inst.GetVitality=GetVitality
+    inst.GetMaxVitality=GetMaxVitality
+    inst.GetVitalityPenalty=GetVitalityPenalty
 end
+
+
 
 -- This initializes for the server only. Components are added here.
 local master_postinit = function(inst)
@@ -54,11 +84,16 @@ local master_postinit = function(inst)
 	-- Uncomment if "wathgrithr"(Wigfrid) or "webber" voice is used
     --inst.talker_path_override = "dontstarve_DLC001/characters/"
 	
-	-- Stats	
+	-- Stats
+
+    inst:AddComponent("vitality")
+
+    inst.components.vitality:SetMax(123)
 	inst.components.health:SetMaxHealth(125)
 	inst.components.hunger:SetMax(150)
 	inst.components.sanity:SetMax(135)
-	
+
+
 	-- Damage multiplier (optional)
     inst.components.combat.damagemultiplier = 0.9
 	
