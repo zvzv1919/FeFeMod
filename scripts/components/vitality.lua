@@ -1,13 +1,13 @@
 local easing = require("easing")
 local SourceModifierList = require("util/sourcemodifierlist")
 
---local function onmax(self, max)
---    self.inst.vitality:SetMax(max)
---end
---
---local function oncurrent(self, current)
---    self.inst.vitality:SetCurrent(self.inducedinvitality and 0 or current)
---end
+local function onmaxvitality(self, max)
+    self.inst.max_vitality:set(max)
+end
+
+local function oncurrentvitality(self, current)
+    self.inst.current_vitality:set(current)
+end
 --
 --local function onratescale(self, ratescale)
 --    self.inst.vitality:SetRateScale(ratescale)
@@ -24,7 +24,7 @@ local SourceModifierList = require("util/sourcemodifierlist")
 --
 --local function oninducedinvitality(self, inducedinvitality)
 --    self.inst.vitality:SetIsVital(not inducedinvitality and self.vital)
---    self.inst.vitality:SetCurrent(inducedinvitality and 0 or self.current)
+--    self.inst.vitality:SetCurrent(inducedinvitality and 0 or self.currentvitality)
 --end
 --
 --local function onpenalty(self, penalty)
@@ -44,8 +44,8 @@ local SourceModifierList = require("util/sourcemodifierlist")
 
 local Vitality = Class(function(self, inst)
     self.inst = inst
-    self.max = 199
-    self.current = self.max
+    self.maxvitality = 199
+    self.currentvitality = self.maxvitality
 
 --    self.mode = VITALITY_MODE_INVITALITY
 
@@ -79,7 +79,12 @@ local Vitality = Class(function(self, inst)
 --    self:RecalcGhostDrain()
 
 --    self.inst:ListenForEvent("changearea", OnChangeArea)
-end)
+end,
+nil,
+    {
+        maxvitality=onmaxvitality,
+        currentvitality=oncurrentvitality
+    })
 --end,
 --    nil,
 --    {
@@ -149,7 +154,7 @@ function Vitality:RecalculatePenalty()
         penalty = penalty + v
     end
 
-    penalty = math.max(penalty, -self.max)
+    penalty = math.max(penalty, -self.maxvitality)
 
     self.penalty = penalty
 
@@ -159,7 +164,7 @@ end
 function Vitality:OnSave()
     return
     {
-        current = self.current,
+        current = self.currentvitality,
 --        vital = self.vital,
 --        mode = self.mode,
     }
@@ -173,7 +178,7 @@ function Vitality:OnLoad(data)
 --    self.mode = data.mode or 0
 
     if data.current ~= nil then
-        self.current = data.current
+        self.currentvitality = data.current
         self:DoDelta(0)
     end
 end
@@ -183,32 +188,33 @@ function Vitality:GetPenaltyPercent()
 end
 
 function Vitality:GetPercent()
-    return self.current / self.max
+    return self.currentvitality / self.maxvitality
 end
 
 function Vitality:GetPercentWithPenalty()
-    return self.current / (self.max - (self.max * self.penalty))
+    return self.currentvitality / (self.maxvitality - (self.maxvitality * self.penalty))
 end
 
 function Vitality:SetPercent(per, overtime)
-    local target = per * self.max
-    local delta = target - self.current
+    local target = per * self.maxvitality
+    local delta = target - self.currentvitality
     self:DoDelta(delta, overtime)
 end
 
 function Vitality:GetDebugString()
-    return string.format("%2.2f / %2.2f at %2.4f. Penalty %2.2f", self.current, self.max, self.rate, self
+    return string.format("%2.2f / %2.2f at %2.4f. Penalty %2.2f", self.currentvitality, self.maxvitality, self.rate,
+        self
     .penalty)
 end
 
 function Vitality:SetMax(amount)
-    self.max = amount
-    self.current = amount
+    self.maxvitality = amount
+    self.currentvitality = amount
     self:DoDelta(0)
 end
 
 function Vitality:GetMaxWithPenalty()
-    return self.max - (self.max * self.penalty)
+    return self.maxvitality - (self.maxvitality * self.penalty)
 end
 
 function Vitality:GetRateScale()
@@ -216,7 +222,7 @@ function Vitality:GetRateScale()
 end
 
 function Vitality:Max()
-    return self.max
+    return self.maxvitality
 end
 
 --function Vitality:SetInducedInvitality(src, val)
@@ -252,10 +258,12 @@ function Vitality:DoDelta(delta, overtime)
         return
     end
 
-    self.current = math.min(math.max(self.current + delta, 0), self.max - (self.max * self.penalty))
+    self.currentvitality = math.min(math.max(self.currentvitality + delta, 0), self.maxvitality - (self.maxvitality *
+            self
+    .penalty))
 
     -- must calculate it due to inducedinvitality ...
---    local percent_ignoresinduced = self.current / self.max
+--    local percent_ignoresinduced = self.currentvitality / self.maxvitality
 --    if self.mode == VITALITY_MODE_INVITALITY then
 --        if self.vital and percent_ignoresinduced <= TUNING.VITALITY_BECOME_INVITAL_THRESH then --30
 --            self.vital = false

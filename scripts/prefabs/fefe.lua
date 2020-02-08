@@ -42,8 +42,11 @@ local function GetVitality(inst)
         return inst.components.vitality:GetPercent()
         --    elseif inst.player_classified ~= nil then
         --        return inst.player_classified.currentwereness:value() * .01
+    elseif inst.player_classified ~= nil then
+
+        return 0.3
     else
-        return 0
+        return 0.1
 --        return inst.components.vitality:GetPercent()
     end
 end
@@ -67,10 +70,13 @@ local common_postinit = function(inst)
 	-- Minimap icon
 	inst.MiniMapEntity:SetIcon( "fefe.tex" )
 	inst:AddTag("vitality")
+--    inst:AddComponent("vitality")
 
-    inst.GetVitality=GetVitality
-    inst.GetMaxVitality=GetMaxVitality
-    inst.GetVitalityPenalty=GetVitalityPenalty
+    inst.max_vitality = net_shortint(inst.GUID, "max_vitality", "vitalitydirty")
+    inst.current_vitality = net_shortint(inst.GUID, "current_vitality", "vitalitydirty")
+--    inst.GetVitality=GetVitality
+--    inst.GetMaxVitality=GetMaxVitality
+--    inst.GetVitalityPenalty=GetVitalityPenalty
 end
 
 
@@ -88,11 +94,20 @@ local master_postinit = function(inst)
 
     inst:AddComponent("vitality")
 
+--    inst.Light:SetRadius(2.5)
+--    inst.Light:SetFalloff(0.3)
+--    inst.Light:SetIntensity(.7)
+--    inst.Light:SetColour(235 / 255, 121 / 255, 12 / 255)
+--    inst.Light:Enable(true)
     inst.components.vitality:SetMax(123)
-	inst.components.health:SetMaxHealth(125)
 	inst.components.hunger:SetMax(150)
 	inst.components.sanity:SetMax(135)
-
+    inst:AddComponent("vitality")
+    if inst.components.vitality ~= nil then
+        inst.components.health:SetMaxHealth(997)
+    else
+        inst.components.health:SetMaxHealth(50)
+    end
 
 	-- Damage multiplier (optional)
     inst.components.combat.damagemultiplier = 0.9

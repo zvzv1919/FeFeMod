@@ -53,7 +53,7 @@ local function StatusPostConstruct(self)
         if self.fefebrain ~= nil and self.onvitalitydelta == nil then
             self.onvitalitydelta = function(owner, data) self:VitalityDelta(data) end
             self.inst:ListenForEvent("vitalitydelta", self.onvitalitydelta, self.owner)
-            self:SetVitalityPercent(1)
+            self.fefebrain:GetVitality()
         end
     end
 
@@ -75,7 +75,7 @@ local function StatusPostConstruct(self)
             elseif self.modetask == nil and self.onvitalitydelta == nil then
                     self.onvitalitydelta = function(owner, data) self:VitalityDelta(data) end
                 self.inst:ListenForEvent("vitalitydelta", self.onvitalitydelta, self.owner)
-                self:SetVitalityPercent(self.owner:GetVitality())
+                self.fefebrain:GetVitality()
             end
         end
     end
@@ -161,7 +161,7 @@ local function StatusPostConstruct(self)
 --    end
 
     function self:VitalityDelta(data)
-        self:SetVitalityPercent(data.newpercent)
+--        self:SetVitalityPercent(data.newpercent)
 --        oldSanityDelta(self,data)
         if not data.overtime then
             if data.newpercent > data.oldpercent then
