@@ -3,6 +3,7 @@ local UIAnim = require "widgets/uianim"
 
 local VitalityBadge = Class(Badge, function(self, owner)
     Badge._ctor(self, nil, owner, {221/255, 182/255, 3/255, 1}, "status_vitality")
+    owner:ListenForEvent("vitalitydirty",function(owner, data)self:GetVitality() end)
 
     self.hungerarrow = self.underNumber:AddChild(UIAnim())
     self.hungerarrow:GetAnimState():SetBank("sanity_arrow")
@@ -12,6 +13,13 @@ local VitalityBadge = Class(Badge, function(self, owner)
 
     self:StartUpdating()
 end)
+
+function VitalityBadge:GetVitality()
+    local max_vitality = self.owner.max_vitality:value()
+    local current_vitality = self.owner.current_vitality:value()
+    local percent_vitality = current_vitality/max_vitality
+    self:SetPercent(percent_vitality, max_vitality)
+end
 
 --TODO:change the following function(check sanitybadge)
 function VitalityBadge:OnUpdate(dt)
