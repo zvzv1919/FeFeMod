@@ -8,7 +8,14 @@ local prefabs = {}
 
 -- Custom starting inventory
 local start_inv = {
-	"flint",
+    "mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes",
+    "mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes",
+    "mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes",
+    "mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes",
+    "mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes",
+    "mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes","mashedpotatoes",
+    "mashedpotatoes","mashedpotatoes",
+    "green_cap","green_cap","green_cap","green_cap","green_cap", "green_cap","green_cap","green_cap","green_cap","green_cap", "green_cap","green_cap","green_cap","green_cap","green_cap", "green_cap","green_cap","green_cap","green_cap","green_cap", "green_cap","green_cap","green_cap","green_cap","green_cap", "green_cap","green_cap","green_cap","green_cap","green_cap", "green_cap","green_cap","green_cap","green_cap","green_cap","torch","torch","flint",
 	"flint",
 	"twigs",
 	"twigs",
@@ -74,6 +81,7 @@ local common_postinit = function(inst)
 
     inst.max_vitality = net_shortint(inst.GUID, "max_vitality", "vitalitydirty")
     inst.current_vitality = net_shortint(inst.GUID, "current_vitality", "vitalitydirty")
+    inst.ratescale_vitality = net_shortint(inst.GUID, "ratescale_vitality", "ratescalevitalitydirty")
 --    inst.GetVitality=GetVitality
 --    inst.GetMaxVitality=GetMaxVitality
 --    inst.GetVitalityPenalty=GetVitalityPenalty
@@ -99,15 +107,23 @@ local master_postinit = function(inst)
 --    inst.Light:SetIntensity(.7)
 --    inst.Light:SetColour(235 / 255, 121 / 255, 12 / 255)
 --    inst.Light:Enable(true)
-    inst.components.vitality:SetMax(123)
+    inst.components.vitality:SetMax(520)
 	inst.components.hunger:SetMax(150)
 	inst.components.sanity:SetMax(135)
-    inst:AddComponent("vitality")
-    if inst.components.vitality ~= nil then
-        inst.components.health:SetMaxHealth(997)
-    else
-        inst.components.health:SetMaxHealth(50)
-    end
+--    inst:AddComponent("vitality")
+
+    inst:ListenForEvent("oneat", function(inst, data)
+        if data.food and data.food.components.edible then
+            local sanity=data.food.components.edible:GetSanity(inst)
+            inst.components.vitality:DoDelta(sanity)
+        end
+    end)
+
+--    if inst.components.vitality ~= nil then
+--        inst.components.health:SetMaxHealth(997)
+--    else
+--        inst.components.health:SetMaxHealth(50)
+--    end
 
 	-- Damage multiplier (optional)
     inst.components.combat.damagemultiplier = 0.9

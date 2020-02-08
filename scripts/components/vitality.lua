@@ -9,9 +9,9 @@ local function oncurrentvitality(self, current)
     self.inst.current_vitality:set(current)
 end
 --
---local function onratescale(self, ratescale)
---    self.inst.vitality:SetRateScale(ratescale)
---end
+local function onratescale(self, ratescale)
+    self.inst.ratescale_vitality:set(ratescale)
+end
 
 
 --local function onmode(self, mode)
@@ -83,7 +83,8 @@ end,
 nil,
     {
         maxvitality=onmaxvitality,
-        currentvitality=oncurrentvitality
+        currentvitality=oncurrentvitality,
+        ratescale = onratescale
     })
 --end,
 --    nil,
@@ -165,6 +166,7 @@ function Vitality:OnSave()
     return
     {
         current = self.currentvitality,
+        max = self.maxvitality
 --        vital = self.vital,
 --        mode = self.mode,
     }
@@ -179,6 +181,10 @@ function Vitality:OnLoad(data)
 
     if data.current ~= nil then
         self.currentvitality = data.current
+        self:DoDelta(0)
+    end
+    if data.max ~= nil then
+        self.maxvitality = data.max
         self:DoDelta(0)
     end
 end
@@ -258,9 +264,7 @@ function Vitality:DoDelta(delta, overtime)
         return
     end
 
-    self.currentvitality = math.min(math.max(self.currentvitality + delta, 0), self.maxvitality - (self.maxvitality *
-            self
-    .penalty))
+    self.currentvitality = math.min(math.max(self.currentvitality + delta, 0), self.maxvitality - self.maxvitality * self.penalty)
 
     -- must calculate it due to inducedinvitality ...
 --    local percent_ignoresinduced = self.currentvitality / self.maxvitality

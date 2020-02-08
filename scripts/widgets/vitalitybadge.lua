@@ -22,18 +22,37 @@ function VitalityBadge:GetVitality()
 end
 
 --TODO:change the following function(check sanitybadge)
+
+local RATE_SCALE_ANIM =
+{
+    [RATE_SCALE.INCREASE_HIGH] = "arrow_loop_increase_most",
+    [RATE_SCALE.INCREASE_MED] = "arrow_loop_increase_more",
+    [RATE_SCALE.INCREASE_LOW] = "arrow_loop_increase",
+    [RATE_SCALE.DECREASE_HIGH] = "arrow_loop_decrease_most",
+    [RATE_SCALE.DECREASE_MED] = "arrow_loop_decrease_more",
+    [RATE_SCALE.DECREASE_LOW] = "arrow_loop_decrease",
+}
+
 function VitalityBadge:OnUpdate(dt)
+    local current_vitality = self.owner.current_vitality:value()
+    local max_vitality = self.owner.max_vitality:value()
     local anim = "neutral"
-    if  self.owner ~= nil and
-        self.owner:HasTag("sleeping") and
-        self.owner.replica.hunger ~= nil and
-        self.owner.replica.hunger:GetPercent() > 0 then
 
-        anim = "arrow_loop_decrease" 
-    end
-
-    if self.owner.components.debuffable and self.owner.components.debuffable:HasDebuff("wintersfeastbuff") then
-        anim = "arrow_loop_increase"
+    if current_vitality ~= nil then
+        local ratescale = self.owner.ratescale_vitality:value()
+        if ratescale == RATE_SCALE.INCREASE_LOW or
+                ratescale == RATE_SCALE.INCREASE_MED or
+                ratescale == RATE_SCALE.INCREASE_HIGH then
+            if current_vitality < max_vitality then
+                anim = RATE_SCALE_ANIM[ratescale]
+            end
+        elseif ratescale == RATE_SCALE.DECREASE_LOW or
+                ratescale == RATE_SCALE.DECREASE_MED or
+                ratescale == RATE_SCALE.DECREASE_HIGH then
+            if current_vitality > 0 then
+                anim = RATE_SCALE_ANIM[ratescale]
+            end
+        end
     end
 
     if self.arrowdir ~= anim then
