@@ -1,6 +1,7 @@
 PrefabFiles = {
 	"fefe",
 	"fefe_none",
+    "pillow"
 }
 
 Assets = {
@@ -35,6 +36,9 @@ Assets = {
     Asset( "ATLAS", "images/names_gold_fefe.xml" ),
 
     Asset("ANIM", "anim/status_vitality.zip"),
+
+    Asset("ATLAS", "images/inventoryimages/pillow.xml"),
+    Asset("IMAGE", "images/inventoryimages/pillow.tex"),
 }
 
 AddMinimapAtlas("images/map_icons/fefe.xml")
@@ -42,6 +46,9 @@ AddMinimapAtlas("images/map_icons/fefe.xml")
 
 local require = GLOBAL.require
 local STRINGS = GLOBAL.STRINGS
+local RECIPETABS = GLOBAL.RECIPETABS
+local TECH = GLOBAL.TECH
+local Ingredient = GLOBAL.Ingredient
 
 --Adds the vitality meter
 local function StatusPostConstruct(self)
@@ -198,6 +205,22 @@ STRINGS.CHARACTERS.FEFE = require "speech_fefe"
 -- The character's name as appears in-game 
 STRINGS.NAMES.FEFE = "fefe"
 STRINGS.SKIN_NAMES.fefe_none = "fefe"
+
+--item names (Name when you hover over it)
+STRINGS.NAMES.PILLOW = "枕头"
+
+--item desc (what happens when you click on it)
+STRINGS.CHARACTERS.GENERIC.DESCRIBE.PILLOW = "我想我很清醒"
+
+--item desc (what happens when ike clicks on it)
+STRINGS.CHARACTERS.FEFE.DESCRIBE.PILLOW = "我不要离开它！"
+
+--Recipe for fefe's items
+local pillow = AddRecipe("pillow", {Ingredient("twigs", 1),Ingredient("flint", 1)}, RECIPETABS.WAR, TECH.NONE, nil, nil, nil, nil, "fefe", "images/inventoryimages/pillow.xml")
+
+--Recipe desc
+STRINGS.RECIPE_DESC.PILLOW = "我之慰藉"
+
 
 -- Add mod character to mod character list. Also specify a gender. Possible genders are MALE, FEMALE, ROBOT, NEUTRAL, and PLURAL.
 AddModCharacter("fefe", "FEMALE")
