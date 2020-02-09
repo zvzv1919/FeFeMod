@@ -18,7 +18,7 @@ local start_inv = {
     "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "torch", "torch", "flint",
     "flint",
     "twigs",
-    "twigs", "panflute", "spear", "spidereggsack","spidereggsack","spidereggsack"
+    "twigs", "panflute", "spear", "spidereggsack","spidereggsack","spidereggsack", "pillow"
 }
 
 -- When the character is revived from human
@@ -106,6 +106,7 @@ local common_postinit = function(inst)
     -- Minimap icon
     inst.MiniMapEntity:SetIcon("fefe.tex")
     inst:AddTag("vitality")
+    inst:AddTag("fefe")
     --    inst:AddComponent("vitality")
 
     inst.max_vitality = net_shortint(inst.GUID, "max_vitality", "vitalitydirty")
@@ -116,7 +117,12 @@ local common_postinit = function(inst)
     --    inst.GetVitalityPenalty=GetVitalityPenalty
 end
 
-
+local POWER_QUOTE={
+    "fefe之力！",
+    "让你再睡会儿",
+    "让你再睡会儿",
+    "???"
+}
 
 -- This initializes for the server only. Components are added here.
 local master_postinit = function(inst)
@@ -138,6 +144,7 @@ local master_postinit = function(inst)
     --    inst.Light:Enable(true)
     inst.components.vitality:SetMax(520)
     inst.components.hunger:SetMax(150)
+    inst.components.health:SetMaxHealth(300)
     inst.components.sanity:SetMax(135)
     --    inst:AddComponent("vitality")
 
@@ -149,19 +156,18 @@ local master_postinit = function(inst)
     end)
 
     inst:ListenForEvent("onattackother", function(inst, data)
-        local sleepChance = .25
+        local sleepChance = .5
         local healChance = .15
         local RHealChance = .25
 
-        if inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS) ~= nil then
+        if inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS) ~= nil and inst.components
+        .inventory:GetEquippedItem(EQUIPSLOTS.HANDS):HasTag("pillow") then
 
-            local handslot = inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
             local victim = data.target
 
-
-
             if math.random() < sleepChance then
-                inst.components.talker:Say("fefe之力")
+
+                inst.components.talker:Say(POWER_QUOTE[math.ceil(3*math.random())])
                 if not inst.components.health:IsDead() and IsValidVictim(victim) then
                     if victim.components.health.fefetask == nil and
                             (TheNet:GetPVPEnabled() or not victim:HasTag("player")) and

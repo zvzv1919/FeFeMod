@@ -108,7 +108,7 @@ local function StatusPostConstruct(self)
                 self.fefebrain:StopWarning()
             end
         else
-            if self.owner:HasTag("vitality") ~= nil then
+            if self.owner:HasTag("vitality") then
                 self.fefebrain:Show()
             end
         end
@@ -218,6 +218,7 @@ STRINGS.CHARACTERS.FEFE.DESCRIBE.PILLOW = "我不要离开它！"
 --Recipe for fefe's items
 local pillow = AddRecipe("pillow", {Ingredient("twigs", 1),Ingredient("flint", 1)}, RECIPETABS.WAR, TECH.NONE, nil, nil, nil, nil, "fefe", "images/inventoryimages/pillow.xml")
 
+AddRecipe("ettard", {Ingredient("goldnugget", 2),Ingredient("flint", 2),Ingredient("twigs", 2)}, RECIPETABS.WAR, TECH.NONE, nil, nil, nil, nil, "ike", "images/inventoryimages/ettard.xml")
 --Recipe desc
 STRINGS.RECIPE_DESC.PILLOW = "我之慰藉"
 
