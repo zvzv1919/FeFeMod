@@ -1,7 +1,10 @@
 PrefabFiles = {
 	"fefe",
 	"fefe_none",
-    "pillow"
+    "pillow",
+	"icepillow",
+	"furrypillow",
+	"ivorypillow"
 }
 
 Assets = {
@@ -39,6 +42,15 @@ Assets = {
 
     Asset("ATLAS", "images/inventoryimages/pillow.xml"),
     Asset("IMAGE", "images/inventoryimages/pillow.tex"),
+	
+	Asset("ATLAS", "images/inventoryimages/icepillow.xml"),
+    Asset("IMAGE", "images/inventoryimages/icepillow.tex"),
+	
+	Asset("ATLAS", "images/inventoryimages/furrypillow.xml"),
+    Asset("IMAGE", "images/inventoryimages/furrypillow.tex"),
+	
+	Asset("ATLAS", "images/inventoryimages/ivorypillow.xml"),
+    Asset("IMAGE", "images/inventoryimages/ivorypillow.tex"),
 }
 
 AddMinimapAtlas("images/map_icons/fefe.xml")
