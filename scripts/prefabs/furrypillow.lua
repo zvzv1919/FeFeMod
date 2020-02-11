@@ -20,11 +20,19 @@ local function onequip(inst, owner)
     owner.AnimState:OverrideSymbol("swap_object", "swap_furrypillow", "furrypillow")
     owner.AnimState:Show("ARM_carry")
     owner.AnimState:Hide("ARM_normal")
+
+    if inst.components.fueled ~= nil then
+        inst.components.fueled:StartConsuming()
+    end
 end
 
 local function onunequip(inst, owner)
     owner.AnimState:Hide("ARM_carry")
     owner.AnimState:Show("ARM_normal")
+
+    if inst.components.fueled ~= nil then
+        inst.components.fueled:StopConsuming()
+    end
 end
 
 local function onattack(inst, attacker, target)
@@ -41,15 +49,27 @@ local function onattack(inst, attacker, target)
         end
         --combat:DoAreaAttack
         local x, y, z = target.Transform:GetWorldPosition()
-        local ents = TheSim:FindEntities(x, y, z, 4, { "_combat" }, nil)
+        local ents = TheSim:FindEntities(x, y, z, TUNING.FURRYPILLOW_AOE, { "_combat" }, nil)
         local weapon = inst.components.weapon
+        local procsleep = (weapon.sleepifyrate ~= nil and math.random() < weapon.sleepifyrate)
+        attacker:PushEvent("onattackother", {
+            target = target,
+            weapon = inst,
+            stimuli = weapon.stimuli,
+            procsleep = procsleep
+        })
         for i, ent in ipairs(ents) do
             if ent ~= target and
                     ent ~= attacker and
                     attacker.components.combat:IsValidTarget(ent) then
-                attacker:PushEvent("onareaattackother", { target = ent, weapon = inst, stimuli = weapon.stimuli })
+                attacker:PushEvent("onareaattackother", {
+                    target = ent,
+                    weapon = inst,
+                    stimuli = weapon.stimuli,
+                    procsleep = procsleep
+                })
                 ent.components.combat:GetAttacked(attacker, attacker.components.combat:CalcDamage(ent, inst,
-                    1), inst, weapon.stimuli)
+                    TUNING.FURRY_PILLOW_AOE_DMGMULT), inst, weapon.stimuli)
             end
         end
     end
@@ -71,8 +91,6 @@ local function fn()
     --add tag furrypillow
     inst:AddTag("pillow")
 
-
-
     inst.entity:SetPristine()
 
     if not TheWorld.ismastersim then
@@ -80,16 +98,25 @@ local function fn()
     end
 
     inst:AddComponent("weapon")
-    inst.components.weapon:SetDamage(20)
-    inst.components.weapon:SetRange(2 * TUNING.WHIP_RANGE)
+    inst.components.weapon:SetDamage(TUNING.FURRYPILLOW_DAMAGE)
+    inst.components.weapon:SetRange(TUNING.FURRYPILLOW_HITRANGE)
     inst.components.weapon:SetOnAttack(onattack)
+    inst.components.weapon.sleepifyrate = TUNING.FURRYPILLOW_SLEEPIFYRATE
 
     -------
 
-    inst:AddComponent("finiteuses")
-    inst.components.finiteuses:SetMaxUses(200)
-    inst.components.finiteuses:SetUses(200)
-    inst.components.finiteuses:SetOnFinished(inst.Remove)
+    --    inst:AddComponent("finiteuses")
+    --    inst.components.finiteuses:SetMaxUses(200)
+    --    inst.components.finiteuses:SetUses(200)
+    --    inst.components.finiteuses:SetOnFinished(inst.Remove)
+
+    inst:AddComponent("insulator")
+    inst.components.insulator:SetInsulation(TUNING.FURRY_PILLOW_INSULATION)
+
+    inst:AddComponent("fueled")
+    inst.components.fueled.fueltype = FUELTYPE.USAGE
+    inst.components.fueled:InitializeFuelLevel(TUNING.FURRY_PILLOW_PERISHTIME)
+    inst.components.fueled:SetDepletedFn(inst.Remove)
 
     inst:AddComponent("inspectable")
 

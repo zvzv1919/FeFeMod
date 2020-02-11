@@ -99,12 +99,12 @@ local function OnPutToSleep(victim)
     local mount = victim.components.rider ~= nil and victim.components.rider:GetMount() or nil
 
     if mount ~= nil then
-        mount:PushEvent("ridersleep", { sleepiness = 10, sleeptime = TUNING.PANFLUTE_SLEEPTIME })
+        mount:PushEvent("ridersleep", { sleepiness = TUNING.PILLOW_SLEEPINESS, sleeptime = TUNING.PILLOW_SLEEPTIME })
     end
     if victim.components.sleeper ~= nil then
-        victim.components.sleeper:AddSleepiness(10, TUNING.PANFLUTE_SLEEPTIME)
+        victim.components.sleeper:AddSleepiness(TUNING.PILLOW_SLEEPINESS, TUNING.PILLOW_SLEEPTIME)
     elseif victim.components.grogginess ~= nil then
-        victim.components.grogginess:AddGrogginess(10, TUNING.PANFLUTE_SLEEPTIME)
+        victim.components.grogginess:AddGrogginess(TUNING.PILLOW_SLEEPINESS, TUNING.PILLOW_SLEEPTIME)
     else
         victim:PushEvent("knockedout")
     end
@@ -116,13 +116,12 @@ local function SayQuote(inst)
 end
 
 local function Sleepify(inst, data)
-    local sleepChance = 1
 
     if inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS) ~= nil and inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS):HasTag("pillow") then
 
         local victim = data.target
 
-        if math.random() < sleepChance then
+        if data.procsleep ~= nil and data.procsleep then
 
             if inst.components.talker.fefetask == nil then
                 inst.components.talker.fefetask = inst:DoTaskInTime(0.01, SayQuote, inst)
@@ -143,7 +142,6 @@ local function Sleepify(inst, data)
         end
     end
 end
-
 
 -- This initializes for both the server and client. Tags can be added here.
 local common_postinit = function(inst)
@@ -181,10 +179,10 @@ local master_postinit = function(inst)
     --    inst.Light:SetIntensity(.7)
     --    inst.Light:SetColour(235 / 255, 121 / 255, 12 / 255)
     --    inst.Light:Enable(true)
-    inst.components.vitality:SetMax(520)
-    inst.components.hunger:SetMax(150)
-    inst.components.health:SetMaxHealth(20000)
-    inst.components.sanity:SetMax(135)
+    inst.components.vitality:SetMax(TUNING.FEFE_MAX_VITALITY)
+    inst.components.hunger:SetMax(TUNING.FEFE_MAX_HUNGER)
+    inst.components.health:SetMaxHealth(TUNING.FEFE_MAX_HEALTH)
+    inst.components.sanity:SetMax(TUNING.FEFE_MAX_SANITY)
     --    inst:AddComponent("vitality")
 
     inst:ListenForEvent("oneat", function(inst, data)
@@ -205,10 +203,10 @@ local master_postinit = function(inst)
     --    end
 
     -- Damage multiplier (optional)
-    inst.components.combat.damagemultiplier = 1
+    inst.components.combat.damagemultiplier = TUNING.FEFE_DAMAGE_MULTIPLIER
 
     -- Hunger rate (optional)
-    inst.components.hunger.hungerrate = 1 * TUNING.WILSON_HUNGER_RATE
+    inst.components.hunger.hungerrate = TUNING.FEFE_HUNGER_RATE
 
     inst.OnLoad = onload
     inst.OnNewSpawn = onload
