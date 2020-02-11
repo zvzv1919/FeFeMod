@@ -18,7 +18,15 @@ local start_inv = {
     "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "torch", "torch", "flint",
     "flint",
     "twigs",
-    "twigs", "panflute", "spear", "spidereggsack","spidereggsack","spidereggsack", "pillow"
+    "twigs", "panflute", "spear", "spidereggsack", "spidereggsack", "spidereggsack", "spidereggsack",
+    "spidereggsack", "spidereggsack", "pillow"
+}
+
+local POWER_QUOTE = {
+    "fefe之力！",
+    "让你再睡会儿",
+    "让你再睡会儿",
+    "???"
 }
 
 -- When the character is revived from human
@@ -101,6 +109,42 @@ local function OnPutToSleep(victim)
         victim:PushEvent("knockedout")
     end
 end
+
+local function SayQuote(inst)
+    inst.components.talker.fefetask = nil
+    inst.components.talker:Say(POWER_QUOTE[math.ceil(3 * math.random())])
+end
+
+local function Sleepify(inst, data)
+    local sleepChance = 1
+
+    if inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS) ~= nil and inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS):HasTag("pillow") then
+
+        local victim = data.target
+
+        if math.random() < sleepChance then
+
+            if inst.components.talker.fefetask == nil then
+                inst.components.talker.fefetask = inst:DoTaskInTime(0.01, SayQuote, inst)
+            end
+
+            if not inst.components.health:IsDead() and IsValidVictim(victim) then
+                if victim.components.health.fefetask == nil and
+                        (TheNet:GetPVPEnabled() or not victim:HasTag("player")) and
+                        not (victim.components.freezable ~= nil and victim.components.freezable:IsFrozen()) and
+                        not (victim.components.pinnable ~= nil and victim.components.pinnable:IsStuck()) and
+                        not (victim.components.fossilizable ~= nil and victim.components.fossilizable:IsFossilized()) then
+                    victim.components.health.fefetask = victim:DoTaskInTime(0.01, OnPutToSleep, victim)
+                end
+                inst.components.health:DoDelta(15)
+                inst.components.sanity:DoDelta(10)
+                inst.components.vitality:DoDelta(20)
+            end
+        end
+    end
+end
+
+
 -- This initializes for both the server and client. Tags can be added here.
 local common_postinit = function(inst)
     -- Minimap icon
@@ -117,12 +161,7 @@ local common_postinit = function(inst)
     --    inst.GetVitalityPenalty=GetVitalityPenalty
 end
 
-local POWER_QUOTE={
-    "fefe之力！",
-    "让你再睡会儿",
-    "让你再睡会儿",
-    "???"
-}
+
 
 -- This initializes for the server only. Components are added here.
 local master_postinit = function(inst)
@@ -144,7 +183,7 @@ local master_postinit = function(inst)
     --    inst.Light:Enable(true)
     inst.components.vitality:SetMax(520)
     inst.components.hunger:SetMax(150)
-    inst.components.health:SetMaxHealth(300)
+    inst.components.health:SetMaxHealth(20000)
     inst.components.sanity:SetMax(135)
     --    inst:AddComponent("vitality")
 
@@ -155,56 +194,8 @@ local master_postinit = function(inst)
         end
     end)
 
-    inst:ListenForEvent("onattackother", function(inst, data)
-        local sleepChance = .5
-        local healChance = .15
-        local RHealChance = .25
-
-        if inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS) ~= nil and inst.components
-        .inventory:GetEquippedItem(EQUIPSLOTS.HANDS):HasTag("pillow") then
-
-            local victim = data.target
-
-            if math.random() < sleepChance then
-
-                inst.components.talker:Say(POWER_QUOTE[math.ceil(3*math.random())])
-                if not inst.components.health:IsDead() and IsValidVictim(victim) then
-                    if victim.components.health.fefetask == nil and
-                            (TheNet:GetPVPEnabled() or not victim:HasTag("player")) and
-                            not (victim.components.freezable ~= nil and victim.components.freezable:IsFrozen()) and
-                            not (victim.components.pinnable ~= nil and victim.components.pinnable:IsStuck()) and
-                            not (victim.components.fossilizable ~= nil and victim.components.fossilizable:IsFossilized()) then
-                        victim.components.health.fefetask = victim:DoTaskInTime(0.01, OnPutToSleep, victim)
-
-                    end
-                    inst.components.health:DoDelta(15)
-                    inst.components.sanity:DoDelta(10)
-                    inst.components.vitality:DoDelta(20)
-                end
-            end
-            --check if ike has ettard
-            --            if handslot:HasTag("ettard")  then
-            --
-            --                --
-            --                if math.random() < healChance then
-            --                    inst.components.talker:Say("Aether!")
-            --                    inst.components.health:DoDelta(15)
-            --                    inst.components.sanity:DoDelta(10)
-            --                end
-            --
-            --            end
-            --check if Ike has the Ragnell
-            --            if handslot:HasTag("ragnell") then
-            --
-            --                --
-            --
-            --                if math.random() < RHealChance then
-            --                    inst.components.talker:Say("Radiant Aether!")
-            --                    inst.components.health:DoDelta(20)
-            --                end
-            --            end
-        end
-    end)
+    inst:ListenForEvent("onareaattackother", Sleepify)
+    inst:ListenForEvent("onattackother", Sleepify)
 
 
     --    if inst.components.vitality ~= nil then
