@@ -62,6 +62,7 @@ local RECIPETABS = GLOBAL.RECIPETABS
 local TECH = GLOBAL.TECH
 local Ingredient = GLOBAL.Ingredient
 local TUNING = GLOBAL.TUNING
+local CUSTOM_RECIPETABS = GLOBAL.CUSTOM_RECIPETABS
 
 TUNING.FEFE_DAMAGE_MULTIPLIER = 0.2
 TUNING.FEFE_MAX_VITALITY = 521
@@ -80,7 +81,7 @@ TUNING.PILLOW_INSULATION = TUNING.INSULATION_SMALL
 
 TUNING.FURRYPILLOW_DAMAGE = 20
 TUNING.FURRYPILLOW_HITRANGE = 2 * TUNING.WHIP_RANGE
-TUNING.FURRYPILLOW_SLEEPIFYRATE = .9
+TUNING.FURRYPILLOW_SLEEPIFYRATE = .15
 TUNING.FURRYPILLOW_AOE = 4
 TUNING.FURRYPILLOW_AOE_DMGMULT = .65
 TUNING.FURRYPILLOW_PERISHTIME = TUNING.WALRUSHAT_PERISHTIME/2
@@ -89,17 +90,17 @@ TUNING.FURRYPILLOW_INSULATION = TUNING.INSULATION_MED
 TUNING.ICEPILLOW_INSULATION = TUNING.INSULATION_LARGE
 TUNING.ICEPILLOW_PERISHTIME = TUNING.PERISH_FAST
 TUNING.ICEPILLOW_DAMAGE = 50
-TUNING.ICEPILLOW_FREEZERATE = .3
+TUNING.ICEPILLOW_FREEZERATE = .25
 TUNING.ICEPILLOW_COLDNESS = 1
 
 TUNING.IVORYPILLOW_DAMAGE = 45
 TUNING.IVORYPILLOW_HITRANGE = TUNING.WHIP_RANGE
-TUNING.IVORYPILLOW_SLEEPIFYRATE = .15
+TUNING.IVORYPILLOW_SLEEPIFYRATE = .1
 TUNING.IVORYPILLOW_AOE = 5
 TUNING.IVORYPILLOW_AOE_DMGMULT = .55
 TUNING.IVORYPILLOW_PERISHTIME = TUNING.WALRUSHAT_PERISHTIME
 TUNING.IVORYPILLOW_INSULATION = TUNING.INSULATION_LARGE
-TUNING.IVORYPILLOW_FREEZERATE = .1
+TUNING.IVORYPILLOW_FREEZERATE = .07
 TUNING.IVORYPILLOW_COLDNESS = 2
 TUNING.IVORYPILLOW_SLEEPINESS = 5
 
@@ -279,33 +280,37 @@ STRINGS.CHARACTERS.FEFE.DESCRIBE.ICEPILLOW = "清凉地睡上一觉！"
 STRINGS.CHARACTERS.FEFE.DESCRIBE.FURRYPILLOW = "适合在我的头下！"
 STRINGS.CHARACTERS.FEFE.DESCRIBE.IVORYPILLOW = "朕的龙枕！"
 
+--Recipetab for fefe
+CUSTOM_RECIPETABS["FEFE"] = { str = "FEFE", sort = 999, icon_atlas = "images/avatars/avatar_fefe.xml",
+    icon = "avatar_fefe.tex", owner_tag =
+"fefe" }
+
 --Recipe for fefe's items
-AddRecipe("pillow", {Ingredient("pigskin", 1),Ingredient("silk", 3)}, RECIPETABS.WAR, TECH.NONE, nil, nil, nil, nil,
+AddRecipe("pillow", {Ingredient("pigskin", 1),Ingredient("silk", 3)}, CUSTOM_RECIPETABS.FEFE, TECH.NONE, nil, nil, nil, nil,
     "fefe", "images/inventoryimages/pillow.xml")
 AddRecipe("icepillow", {Ingredient("pillow", 1, "images/inventoryimages/pillow.xml"),Ingredient("icehat", 1), Ingredient
-("gears", 1)}, RECIPETABS
-.WAR, TECH
-.NONE,
+("gears", 1)}, CUSTOM_RECIPETABS
+.FEFE, TECH
+.SCIENCE_TWO,
     nil,
     nil, nil,
     nil,
     "fefe", "images/inventoryimages/icepillow.xml")
-AddRecipe("furrypillow", {Ingredient("pillow", 1, "images/inventoryimages/pillow.xml"),Ingredient("beefalohat", 1), Ingredient("whip",1)}, RECIPETABS
-.WAR,
+AddRecipe("furrypillow", {Ingredient("pillow", 1, "images/inventoryimages/pillow.xml"),Ingredient("beefalohat", 1), Ingredient("whip",1)}, CUSTOM_RECIPETABS
+.FEFE,
     TECH
-.NONE,
+.SCIENCE_TWO,
     nil,
     nil, nil,
     nil,
     "fefe", "images/inventoryimages/furrypillow.xml")
 AddRecipe("ivorypillow", {Ingredient("furrypillow", 1, "images/inventoryimages/furrypillow.xml"),Ingredient
 ("icepillow", 1, "images/inventoryimages/icepillow.xml"),Ingredient("minotaurhorn", 1)},
-    RECIPETABS
-.WAR, TECH.NONE, nil,
+    CUSTOM_RECIPETABS
+.FEFE, TECH.MAGIC_THREE, nil,
     nil,
     nil,
     nil, "fefe", "images/inventoryimages/ivorypillow.xml")
-
 
 
 --Recipe desc
