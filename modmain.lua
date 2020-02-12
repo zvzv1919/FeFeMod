@@ -4,7 +4,8 @@ PrefabFiles = {
     "pillow",
 	"icepillow",
 	"furrypillow",
-	"ivorypillow"
+	"ivorypillow",
+    "catcoonden_placer"
 }
 
 Assets = {
@@ -51,6 +52,7 @@ Assets = {
 	
 	Asset("ATLAS", "images/inventoryimages/ivorypillow.xml"),
     Asset("IMAGE", "images/inventoryimages/ivorypillow.tex"),
+
 }
 
 AddMinimapAtlas("images/map_icons/fefe.xml")
@@ -311,7 +313,13 @@ AddRecipe("ivorypillow", {Ingredient("furrypillow", 1, "images/inventoryimages/f
     nil,
     nil,
     nil, "fefe", "images/inventoryimages/ivorypillow.xml")
-
+AddRecipe("catcoonden", {Ingredient("coontail", 3),Ingredient
+("boards", 3),Ingredient("pumpkin", 3)},
+    CUSTOM_RECIPETABS
+    .FEFE, TECH.NONE, "catcoonden_placer",
+    1.5,
+    nil,
+    nil, "fefe")
 
 --Recipe desc
 STRINGS.RECIPE_DESC.PILLOW = "我之慰藉"
