@@ -69,7 +69,7 @@ local function onattack(inst, attacker, target)
                     procsleep = procsleep
                 })
                 ent.components.combat:GetAttacked(attacker, attacker.components.combat:CalcDamage(ent, inst,
-                    TUNING.FURRY_PILLOW_AOE_DMGMULT), inst, weapon.stimuli)
+                    TUNING.FURRYPILLOW_AOE_DMGMULT), inst, weapon.stimuli)
             end
         end
     end
@@ -111,11 +111,11 @@ local function fn()
     --    inst.components.finiteuses:SetOnFinished(inst.Remove)
 
     inst:AddComponent("insulator")
-    inst.components.insulator:SetInsulation(TUNING.FURRY_PILLOW_INSULATION)
+    inst.components.insulator:SetInsulation(TUNING.FURRYPILLOW_INSULATION)
 
     inst:AddComponent("fueled")
     inst.components.fueled.fueltype = FUELTYPE.USAGE
-    inst.components.fueled:InitializeFuelLevel(TUNING.FURRY_PILLOW_PERISHTIME)
+    inst.components.fueled:InitializeFuelLevel(TUNING.FURRYPILLOW_PERISHTIME)
     inst.components.fueled:SetDepletedFn(inst.Remove)
 
     inst:AddComponent("inspectable")

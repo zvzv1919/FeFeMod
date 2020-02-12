@@ -94,17 +94,17 @@ local function IsValidVictim(victim)
             and victim.components.combat ~= nil
 end
 
-local function OnPutToSleep(victim)
+local function OnPutToSleep(victim, sleepiness)
     victim.components.health.fefetask = nil
     local mount = victim.components.rider ~= nil and victim.components.rider:GetMount() or nil
 
     if mount ~= nil then
-        mount:PushEvent("ridersleep", { sleepiness = TUNING.PILLOW_SLEEPINESS, sleeptime = TUNING.PILLOW_SLEEPTIME })
+        mount:PushEvent("ridersleep", { sleepiness = sleepiness, sleeptime = TUNING.PILLOW_SLEEPTIME })
     end
     if victim.components.sleeper ~= nil then
-        victim.components.sleeper:AddSleepiness(TUNING.PILLOW_SLEEPINESS, TUNING.PILLOW_SLEEPTIME)
+        victim.components.sleeper:AddSleepiness(sleepiness, TUNING.PILLOW_SLEEPTIME)
     elseif victim.components.grogginess ~= nil then
-        victim.components.grogginess:AddGrogginess(TUNING.PILLOW_SLEEPINESS, TUNING.PILLOW_SLEEPTIME)
+        victim.components.grogginess:AddGrogginess(sleepiness, TUNING.PILLOW_SLEEPTIME)
     else
         victim:PushEvent("knockedout")
     end
@@ -120,10 +120,11 @@ local function Sleepify(inst, data)
     if inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS) ~= nil and inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS):HasTag("pillow") then
 
         local victim = data.target
+        local sleepiness = data.sleepiness == nil and TUNING.PILLOW_SLEEPINESS or data.sleepiness
 
         if data.procsleep ~= nil and data.procsleep then
 
-            if inst.components.talker.fefetask == nil then
+            if inst.components.talker ~= nil and inst.components.talker.fefetask == nil then
                 inst.components.talker.fefetask = inst:DoTaskInTime(0.01, SayQuote, inst)
             end
 
@@ -133,7 +134,8 @@ local function Sleepify(inst, data)
                         not (victim.components.freezable ~= nil and victim.components.freezable:IsFrozen()) and
                         not (victim.components.pinnable ~= nil and victim.components.pinnable:IsStuck()) and
                         not (victim.components.fossilizable ~= nil and victim.components.fossilizable:IsFossilized()) then
-                    victim.components.health.fefetask = victim:DoTaskInTime(0.01, OnPutToSleep, victim)
+                    victim.components.health.fefetask = victim:DoTaskInTime(0.01, OnPutToSleep,
+                        sleepiness)
                 end
                 inst.components.health:DoDelta(15)
                 inst.components.sanity:DoDelta(10)
