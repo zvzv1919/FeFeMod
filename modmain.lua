@@ -4,7 +4,8 @@ PrefabFiles = {
     "pillow",
 	"icepillow",
 	"furrypillow",
-	"ivorypillow"
+	"ivorypillow",
+    "catcoonden_placer"
 }
 
 Assets = {
@@ -51,6 +52,7 @@ Assets = {
 	
 	Asset("ATLAS", "images/inventoryimages/ivorypillow.xml"),
     Asset("IMAGE", "images/inventoryimages/ivorypillow.tex"),
+
 }
 
 AddMinimapAtlas("images/map_icons/fefe.xml")
@@ -61,6 +63,50 @@ local STRINGS = GLOBAL.STRINGS
 local RECIPETABS = GLOBAL.RECIPETABS
 local TECH = GLOBAL.TECH
 local Ingredient = GLOBAL.Ingredient
+local TUNING = GLOBAL.TUNING
+local CUSTOM_RECIPETABS = GLOBAL.CUSTOM_RECIPETABS
+
+TUNING.FEFE_DAMAGE_MULTIPLIER = 0.2
+TUNING.FEFE_MAX_VITALITY = 521
+TUNING.FEFE_MAX_HEALTH = 20000
+TUNING.FEFE_MAX_HUNGER = 299
+TUNING.FEFE_MAX_SANITY = 298
+TUNING.FEFE_HUNGER_RATE = 1 * TUNING.WILSON_HUNGER_RATE
+
+TUNING.PILLOW_SLEEPTIME = TUNING.PANFLUTE_SLEEPTIME
+TUNING.PILLOW_SLEEPINESS = 2    --delaying sleeping of some creatures like spider; stronger creatures like bosses can
+-- take several successive procs before going to sleep.
+TUNING.PILLOW_DAMAGE = 20
+TUNING.PILLOW_USES = 300
+TUNING.PILLOW_SLEEPIFYRATE = .2
+TUNING.PILLOW_INSULATION = TUNING.INSULATION_SMALL
+
+TUNING.FURRYPILLOW_DAMAGE = 20
+TUNING.FURRYPILLOW_HITRANGE = 2 * TUNING.WHIP_RANGE
+TUNING.FURRYPILLOW_SLEEPIFYRATE = .15
+TUNING.FURRYPILLOW_AOE = 4
+TUNING.FURRYPILLOW_AOE_DMGMULT = .65
+TUNING.FURRYPILLOW_PERISHTIME = TUNING.WALRUSHAT_PERISHTIME/2
+TUNING.FURRYPILLOW_INSULATION = TUNING.INSULATION_MED
+
+TUNING.ICEPILLOW_INSULATION = TUNING.INSULATION_LARGE
+TUNING.ICEPILLOW_PERISHTIME = TUNING.PERISH_FAST
+TUNING.ICEPILLOW_DAMAGE = 50
+TUNING.ICEPILLOW_FREEZERATE = .25
+TUNING.ICEPILLOW_COLDNESS = 1
+
+TUNING.IVORYPILLOW_DAMAGE = 45
+TUNING.IVORYPILLOW_HITRANGE = TUNING.WHIP_RANGE
+TUNING.IVORYPILLOW_SLEEPIFYRATE = .1
+TUNING.IVORYPILLOW_AOE = 5
+TUNING.IVORYPILLOW_AOE_DMGMULT = .55
+TUNING.IVORYPILLOW_PERISHTIME = TUNING.WALRUSHAT_PERISHTIME
+TUNING.IVORYPILLOW_INSULATION = TUNING.INSULATION_LARGE
+TUNING.IVORYPILLOW_FREEZERATE = .07
+TUNING.IVORYPILLOW_COLDNESS = 2
+TUNING.IVORYPILLOW_SLEEPINESS = 5
+
+
 
 --Adds the vitality meter
 local function StatusPostConstruct(self)
@@ -208,7 +254,7 @@ AddClassPostConstruct("widgets/statusdisplays", StatusPostConstruct)
 -- The character select screen lines
 STRINGS.CHARACTER_TITLES.fefe = "睡觉达人"
 STRINGS.CHARACTER_NAMES.fefe = "fefe"
-STRINGS.CHARACTER_DESCRIPTIONS.fefe = "*Perk 1\n*Perk 2\n*Perk 3"
+STRINGS.CHARACTER_DESCRIPTIONS.fefe = "*\n*Perk 2\n*Perk 3"
 STRINGS.CHARACTER_QUOTES.fefe = "\"让我再睡一会儿\""
 
 -- Custom speech strings
@@ -236,17 +282,44 @@ STRINGS.CHARACTERS.FEFE.DESCRIBE.ICEPILLOW = "清凉地睡上一觉！"
 STRINGS.CHARACTERS.FEFE.DESCRIBE.FURRYPILLOW = "适合在我的头下！"
 STRINGS.CHARACTERS.FEFE.DESCRIBE.IVORYPILLOW = "朕的龙枕！"
 
+--Recipetab for fefe
+CUSTOM_RECIPETABS["FEFE"] = { str = "FEFE", sort = 999, icon_atlas = "images/avatars/avatar_fefe.xml",
+    icon = "avatar_fefe.tex", owner_tag =
+"fefe" }
+
 --Recipe for fefe's items
-AddRecipe("pillow", {Ingredient("twigs", 1),Ingredient("flint", 1)}, RECIPETABS.WAR, TECH.NONE, nil, nil, nil, nil, "fefe", "images/inventoryimages/pillow.xml")
-AddRecipe("icepillow", {Ingredient("twigs", 1),Ingredient("flint", 1)}, RECIPETABS.WAR, TECH.NONE, nil, nil, nil, nil,
+AddRecipe("pillow", {Ingredient("pigskin", 1),Ingredient("silk", 3)}, CUSTOM_RECIPETABS.FEFE, TECH.NONE, nil, nil, nil, nil,
+    "fefe", "images/inventoryimages/pillow.xml")
+AddRecipe("icepillow", {Ingredient("pillow", 1, "images/inventoryimages/pillow.xml"),Ingredient("icehat", 1), Ingredient
+("gears", 1)}, CUSTOM_RECIPETABS
+.FEFE, TECH
+.SCIENCE_TWO,
+    nil,
+    nil, nil,
+    nil,
     "fefe", "images/inventoryimages/icepillow.xml")
-AddRecipe("furrypillow", {Ingredient("twigs", 1),Ingredient("flint", 1)}, RECIPETABS.WAR, TECH.NONE, nil, nil, nil,
+AddRecipe("furrypillow", {Ingredient("pillow", 1, "images/inventoryimages/pillow.xml"),Ingredient("beefalohat", 1), Ingredient("whip",1)}, CUSTOM_RECIPETABS
+.FEFE,
+    TECH
+.SCIENCE_TWO,
+    nil,
+    nil, nil,
     nil,
     "fefe", "images/inventoryimages/furrypillow.xml")
-AddRecipe("ivorypillow", {Ingredient("twigs", 1),Ingredient("flint", 1)}, RECIPETABS.WAR, TECH.NONE, nil, nil, nil,
+AddRecipe("ivorypillow", {Ingredient("furrypillow", 1, "images/inventoryimages/furrypillow.xml"),Ingredient
+("icepillow", 1, "images/inventoryimages/icepillow.xml"),Ingredient("minotaurhorn", 1)},
+    CUSTOM_RECIPETABS
+.FEFE, TECH.MAGIC_THREE, nil,
+    nil,
+    nil,
     nil, "fefe", "images/inventoryimages/ivorypillow.xml")
-
-
+AddRecipe("catcoonden", {Ingredient("coontail", 3),Ingredient
+("boards", 3),Ingredient("pumpkin", 3)},
+    CUSTOM_RECIPETABS
+    .FEFE, TECH.NONE, "catcoonden_placer",
+    1.5,
+    nil,
+    nil, "fefe")
 
 --Recipe desc
 STRINGS.RECIPE_DESC.PILLOW = "我之慰藉"

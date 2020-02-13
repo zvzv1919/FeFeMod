@@ -8,15 +8,11 @@
 
 local assets =
 {
-
     Asset("ANIM", "anim/pillow.zip"),
     Asset("ANIM", "anim/swap_pillow.zip"),
 
     Asset("ATLAS", "images/inventoryimages/pillow.xml"),
     Asset("IMAGE", "images/inventoryimages/pillow.tex"),
-
-
-
 }
 
 local function onequip(inst, owner)
@@ -24,11 +20,31 @@ local function onequip(inst, owner)
     owner.AnimState:OverrideSymbol("swap_object", "swap_pillow", "pillow")
     owner.AnimState:Show("ARM_carry")
     owner.AnimState:Hide("ARM_normal")
+
+    if inst.components.fueled ~= nil then
+        inst.components.fueled:StartConsuming()
+    end
 end
 
 local function onunequip(inst, owner)
     owner.AnimState:Hide("ARM_carry")
     owner.AnimState:Show("ARM_normal")
+
+    if inst.components.fueled ~= nil then
+        inst.components.fueled:StopConsuming()
+    end
+end
+
+local function onattack(inst, attacker, target)
+    --inst: this prefab(not its components.weapon)
+    --attacker: the one holding this weapon
+    --target: the one being attacked
+    local weapon = inst.components.weapon
+    local procsleep = (weapon.sleepifyrate ~= nil and math.random()<weapon.sleepifyrate)
+    if target ~= nil and target:IsValid() then
+        attacker:PushEvent("onattackother", { target = target, weapon = inst, stimuli = weapon.stimuli, procsleep =
+        procsleep })
+    end
 end
 
 
@@ -57,13 +73,17 @@ local function fn()
     end
 
     inst:AddComponent("weapon")
-    inst.components.weapon:SetDamage(20)
+    inst.components.weapon:SetDamage(TUNING.PILLOW_DAMAGE)
+    inst.components.weapon:SetOnAttack(onattack)
+    inst.components.weapon.sleepifyrate = TUNING.PILLOW_SLEEPIFYRATE
 
     -------
+    inst:AddComponent("insulator")
+    inst.components.insulator:SetInsulation(TUNING.PILLOW_INSULATION)
 
     inst:AddComponent("finiteuses")
-    inst.components.finiteuses:SetMaxUses(200)
-    inst.components.finiteuses:SetUses(200)
+    inst.components.finiteuses:SetMaxUses(TUNING.PILLOW_USES)
+    inst.components.finiteuses:SetUses(TUNING.PILLOW_USES)
     inst.components.finiteuses:SetOnFinished(inst.Remove)
 
     inst:AddComponent("inspectable")
@@ -80,5 +100,5 @@ local function fn()
     return inst
 end
 
-return Prefab( "common/inventory/pillow", fn, assets,prefabs)
+return Prefab("common/inventory/pillow", fn, assets, prefabs)
 

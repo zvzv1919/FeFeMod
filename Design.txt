@@ -39,14 +39,9 @@ STATUE OF FELICY（自由菲神像）：
 
 Todo:
 
--sleepify other creatures using inst.components.sleeper:AddSleepiness(sleepiness, sleeptime) see prefabs/panflute
+-Place all attributes to modmain, override TUNING.
 -Find RED methods
 -component/fueled can be used to achieve the reparable attribute. check prefab/hats for example
--AddClassPostConstruct can be used for altering widgets
 -Check 'scripts/recipes.lua' for info on new tech tree
--components/vitality
--add vitality arrows (check sanity.onupdate())
--which one calls sanity:recalc()? -Sanity:Longupdate()? -entityscript:LongUpdate()? also check
-updatelooper:addlongupdatefn()
 -make vitality badge compatible with the boatmeter
 -light effect see preparedfoods_warly.glowberrymousse
