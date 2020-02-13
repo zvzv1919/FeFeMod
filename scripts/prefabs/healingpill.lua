@@ -6,6 +6,17 @@ local assets =
     Asset("IMAGE", "images/inventoryimages/healingpill.tex"),
 }
 
+local prefabs = {"feferegenbuff"}
+
+local oneatenfn = function(inst, eater)
+    eater.components.health:DoDelta(15, nil, "healingpill")
+    if eater.components.debuffable ~= nil and eater.components.debuffable:IsEnabled() and
+            not (eater.components.health ~= nil and eater.components.health:IsDead()) and
+            not eater:HasTag("playerghost") then
+        eater.components.debuffable:AddDebuff("feferegenbuff", "feferegenbuff")
+    end
+end
+
 local function fn()
     local inst = CreateEntity()
 
@@ -36,11 +47,14 @@ local function fn()
     inst.components.inventoryitem.atlasname = "images/inventoryimages/healingpill.xml"
 
     inst:AddComponent("edible")
-    inst.components.edible.healthvalue = 100
+    inst.components.edible.healthvalue = 0
+    inst.components.edible.hungervalue = -5
+    inst.components.edible.sanityvalue = -30
+    inst.components.edible.oneaten = oneatenfn
 
     MakeHauntableLaunch(inst)
 
     return inst
 end
 
-return Prefab("healingpill", fn, assets)
+return Prefab("healingpill", fn, assets, prefabs)

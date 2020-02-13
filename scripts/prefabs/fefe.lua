@@ -15,11 +15,8 @@ local start_inv = {
     "mashedpotatoes", "mashedpotatoes", "mashedpotatoes", "mashedpotatoes", "mashedpotatoes", "mashedpotatoes",
     "mashedpotatoes", "mashedpotatoes", "mashedpotatoes", "mashedpotatoes", "mashedpotatoes", "mashedpotatoes",
     "mashedpotatoes", "mashedpotatoes",
-    "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "torch", "torch", "flint",
-    "flint",
-    "twigs",
-    "twigs", "panflute", "spear", "spidereggsack", "spidereggsack", "spidereggsack", "spidereggsack",
-    "spidereggsack", "spidereggsack", "pillow"
+    "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "torch", "torch", "flint", "spidereggsack", "spidereggsack", "spidereggsack", "spidereggsack",
+    "spidereggsack", "spidereggsack", "pillow", "jelly"
 }
 
 local POWER_QUOTE = {
