@@ -1,6 +1,6 @@
 local assets =
 {
-    Asset("ANIM", "anim/spider_gland_salve.zip"),
+    Asset("ANIM", "anim/healingpill.zip"),
 
     Asset("ATLAS", "images/inventoryimages/healingpill.xml"),
     Asset("IMAGE", "images/inventoryimages/healingpill.tex"),
@@ -15,8 +15,8 @@ local function fn()
 
     MakeInventoryPhysics(inst)
 
-    inst.AnimState:SetBank("spider_gland_salve")
-    inst.AnimState:SetBuild("spider_gland_salve")
+    inst.AnimState:SetBank("healingpill")
+    inst.AnimState:SetBuild("healingpill")
     inst.AnimState:PlayAnimation("idle")
 
     MakeInventoryFloatable(inst, "small", 0.05, 0.95)
