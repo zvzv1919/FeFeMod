@@ -54,6 +54,12 @@ Assets = {
 	Asset("ATLAS", "images/inventoryimages/ivorypillow.xml"),
     Asset("IMAGE", "images/inventoryimages/ivorypillow.tex"),
 
+    Asset("ATLAS", "images/inventoryimages/healingpill.xml"),
+    Asset("IMAGE", "images/inventoryimages/healingpill.tex"),
+
+    Asset("ATLAS", "images/inventoryimages/catcoonden.xml"),
+    Asset("IMAGE", "images/inventoryimages/catcoonden.tex"),
+
 }
 
 AddMinimapAtlas("images/map_icons/fefe.xml")
@@ -323,7 +329,7 @@ AddRecipe("catcoonden", {Ingredient("coontail", 3),Ingredient
     .FEFE, TECH.NONE, "catcoonden_placer",
     1.5,
     nil,
-    nil, "fefe", "images/inventoryimages/catcoonden.xml")
+    nil, "fefe", "images/inventoryimages/catcoonden.xml", "catcoonden.tex") --the image path must not be absolute
 AddRecipe("healingpill", {Ingredient("cutgrass", 1)}, CUSTOM_RECIPETABS.FEFE, TECH.NONE, nil, nil,
     nil,
     nil,

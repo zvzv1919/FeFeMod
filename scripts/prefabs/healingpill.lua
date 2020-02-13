@@ -1,6 +1,9 @@
 local assets =
 {
     Asset("ANIM", "anim/spider_gland_salve.zip"),
+
+    Asset("ATLAS", "images/inventoryimages/healingpill.xml"),
+    Asset("IMAGE", "images/inventoryimages/healingpill.tex"),
 }
 
 local function fn()
