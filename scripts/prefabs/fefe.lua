@@ -24,8 +24,8 @@ local start_inv = {
 
 local POWER_QUOTE = {
     "fefe之力！",
-    "让你再睡会儿",
-    "让你再睡会儿",
+    "你再睡会儿",
+    "你再睡一会儿",
     "???"
 }
 

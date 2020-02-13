@@ -57,6 +57,9 @@ Assets = {
     Asset("ATLAS", "images/inventoryimages/healingpill.xml"),
     Asset("IMAGE", "images/inventoryimages/healingpill.tex"),
 
+    Asset("ATLAS", "images/inventoryimages/hallucipill.xml"),
+    Asset("IMAGE", "images/inventoryimages/hallucipill.tex"),
+
     Asset("ATLAS", "images/inventoryimages/catcoonden.xml"),
     Asset("IMAGE", "images/inventoryimages/catcoonden.tex"),
 
@@ -261,7 +264,7 @@ AddClassPostConstruct("widgets/statusdisplays", StatusPostConstruct)
 -- The character select screen lines
 STRINGS.CHARACTER_TITLES.fefe = "睡觉达人"
 STRINGS.CHARACTER_NAMES.fefe = "fefe"
-STRINGS.CHARACTER_DESCRIPTIONS.fefe = "*\n*Perk 2\n*Perk 3"
+STRINGS.CHARACTER_DESCRIPTIONS.fefe = "嗜睡如命\n气血稀薄，但好勇斗狠\n药不离身\n酷爱小猫"
 STRINGS.CHARACTER_QUOTES.fefe = "\"让我再睡一会儿\""
 
 -- Custom speech strings
@@ -276,21 +279,24 @@ STRINGS.NAMES.PILLOW = "枕头"
 STRINGS.NAMES.ICEPILLOW = "夏日枕"
 STRINGS.NAMES.FURRYPILLOW = "小猫枕"
 STRINGS.NAMES.IVORYPILLOW = "龙枕"
-STRINGS.NAMES.HEALINGPILL = "云南白药"
+STRINGS.NAMES.HEALINGPILL = "布洛芬"
+STRINGS.NAMES.HALLUCIPILL = "摇头丸"
 
 --item desc (what happens when you click on it)
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.PILLOW = "我想我很清醒"
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.ICEPILLOW = "我想我很清醒"
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.FURRYPILLOW = "我想我很清醒"
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.IVORYPILLOW = "我想我很清醒"
-STRINGS.CHARACTERS.GENERIC.DESCRIBE.HEALINGPILL = "云南白药"
+STRINGS.CHARACTERS.GENERIC.DESCRIBE.HEALINGPILL = "这东西有副作用"
+STRINGS.CHARACTERS.GENERIC.DESCRIBE.HALLUCIPILL = "我还是不要碰这个比较好"
 
 --item desc (what happens when ike clicks on it)
 STRINGS.CHARACTERS.FEFE.DESCRIBE.PILLOW = "我不要离开它！"
 STRINGS.CHARACTERS.FEFE.DESCRIBE.ICEPILLOW = "清凉地睡上一觉！"
 STRINGS.CHARACTERS.FEFE.DESCRIBE.FURRYPILLOW = "适合在我的头下！"
 STRINGS.CHARACTERS.FEFE.DESCRIBE.IVORYPILLOW = "朕的龙枕！"
-STRINGS.CHARACTERS.FEFE.DESCRIBE.HEALINGPILL = "云南白药"
+STRINGS.CHARACTERS.FEFE.DESCRIBE.HEALINGPILL = "吃一片就不痛了"
+STRINGS.CHARACTERS.FEFE.DESCRIBE.HALLUCIPILL = "吃了会做奇怪的梦"
 
 --Recipetab for fefe
 CUSTOM_RECIPETABS["FEFE"] = { str = "FEFE", sort = 999, icon_atlas = "images/avatars/avatar_fefe.xml",
@@ -334,12 +340,17 @@ AddRecipe("healingpill", {Ingredient("cutgrass", 1)}, CUSTOM_RECIPETABS.FEFE, TE
     nil,
     nil,
     "fefe","images/inventoryimages/healingpill.xml")
+AddRecipe("hallucipill", {Ingredient("cutgrass", 1)}, CUSTOM_RECIPETABS.FEFE, TECH.NONE, nil, nil,
+    nil,
+    nil,
+    "fefe","images/inventoryimages/hallucipill.xml")
 --Recipe desc
 STRINGS.RECIPE_DESC.PILLOW = "我之慰藉"
 STRINGS.RECIPE_DESC.ICEPILLOW = "我之所好"
 STRINGS.RECIPE_DESC.FURRYPILLOW = "我之挚爱"
 STRINGS.RECIPE_DESC.IVORYPILLOW = "我之天命"
-STRINGS.RECIPE_DESC.HEALINGPILL = "云南白药"
+STRINGS.RECIPE_DESC.HEALINGPILL = "止疼名药"
+STRINGS.RECIPE_DESC.HALLUCIPILL = "通往极乐"
 
 -- Add mod character to mod character list. Also specify a gender. Possible genders are MALE, FEMALE, ROBOT, NEUTRAL, and PLURAL.
 AddModCharacter("fefe", "FEMALE")
