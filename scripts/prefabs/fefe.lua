@@ -4,7 +4,7 @@ local MakePlayerCharacter = require "prefabs/player_common"
 local assets = {
     Asset("SCRIPT", "scripts/prefabs/player_common.lua"),
 }
-local prefabs = {}
+local prefabs = {"invitalbuff"}
 
 -- Custom starting inventory
 local start_inv = {
@@ -16,7 +16,7 @@ local start_inv = {
     "mashedpotatoes", "mashedpotatoes", "mashedpotatoes", "mashedpotatoes", "mashedpotatoes", "mashedpotatoes",
     "mashedpotatoes", "mashedpotatoes",
     "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "green_cap", "torch", "torch", "flint", "spidereggsack", "spidereggsack", "spidereggsack", "spidereggsack",
-    "spidereggsack", "spidereggsack", "pillow", "jelly"
+    "spidereggsack", "spidereggsack", "pillow", "jellybean"
 }
 
 local POWER_QUOTE = {
@@ -131,8 +131,7 @@ local function Sleepify(inst, data)
                         not (victim.components.freezable ~= nil and victim.components.freezable:IsFrozen()) and
                         not (victim.components.pinnable ~= nil and victim.components.pinnable:IsStuck()) and
                         not (victim.components.fossilizable ~= nil and victim.components.fossilizable:IsFossilized()) then
-                    victim.components.health.fefetask = victim:DoTaskInTime(0.01, OnPutToSleep,
-                        sleepiness)
+                    victim.components.health.fefetask = victim:DoTaskInTime(0.01, OnPutToSleep, sleepiness)
                 end
                 inst.components.health:DoDelta(15)
                 inst.components.sanity:DoDelta(10)
@@ -209,6 +208,12 @@ local master_postinit = function(inst)
 
     inst.OnLoad = onload
     inst.OnNewSpawn = onload
+
+    if inst.components.debuffable ~= nil and inst.components.debuffable:IsEnabled() and
+            not (inst.components.vitality ~= nil and inst.components.health:IsDead()) and
+            not inst:HasTag("playerghost") then
+        inst.components.debuffable:AddDebuff("invitalbuff", "invitalbuff")
+    end
 end
 
 return MakePlayerCharacter("fefe", prefabs, assets, common_postinit, master_postinit, start_inv)

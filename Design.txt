@@ -2,6 +2,7 @@ VITALITY（活力值）:
 -high hunger
 -low san
 --at night
++yawning
 +during day
 ++when sleeping
 +when hitting/getting hit

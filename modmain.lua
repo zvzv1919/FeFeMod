@@ -8,7 +8,8 @@ PrefabFiles = {
     "catcoonden_placer",
     "healingpill",
     "headachepill",
-    "feferegenbuff"
+    "feferegenbuff",
+    "invitalbuff"
 }
 
 Assets = {
@@ -79,10 +80,10 @@ local TUNING = GLOBAL.TUNING
 local CUSTOM_RECIPETABS = GLOBAL.CUSTOM_RECIPETABS
 
 TUNING.FEFE_DAMAGE_MULTIPLIER = 1
-TUNING.FEFE_MAX_VITALITY = 521
+TUNING.FEFE_MAX_VITALITY = 100
 TUNING.FEFE_MAX_HEALTH = 20000
 TUNING.FEFE_MAX_HUNGER = 299
-TUNING.FEFE_MAX_SANITY = 298
+TUNING.FEFE_MAX_SANITY = 20000
 TUNING.FEFE_HUNGER_RATE = 1 * TUNING.WILSON_HUNGER_RATE
 
 TUNING.PILLOW_SLEEPTIME = TUNING.PANFLUTE_SLEEPTIME
@@ -122,6 +123,10 @@ TUNING.HEALINGPILL_TICK_RATE = 0.6
 TUNING.HEALINGPILL_DURATION = 30
 TUNING.HEALINGPILL_TICK_VALUE = 1
 TUNING.HEALINGPILL_STACK_SIZE = 1
+
+TUNING.FEFE_YAWN_INTERVAL_FIXED = 5
+TUNING.FEFE_YAWN_INTERVAL_RANDOM = 10   --dropping the modified interval below 10 will make the game unplayable
+TUNING.FEFE_YAWN_GROGGINESS = 2
 
 
 --Adds the vitality meter
@@ -361,5 +366,7 @@ STRINGS.RECIPE_DESC.IVORYPILLOW = "我之天命"
 STRINGS.RECIPE_DESC.HEALINGPILL = "专治感冒"
 STRINGS.RECIPE_DESC.HEADACHEPILL = "止疼名药"
 
+--Setting new random seed
+--math.randomseed(os.time())
 -- Add mod character to mod character list. Also specify a gender. Possible genders are MALE, FEMALE, ROBOT, NEUTRAL, and PLURAL.
 AddModCharacter("fefe", "FEMALE")
