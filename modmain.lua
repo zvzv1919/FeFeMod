@@ -7,7 +7,7 @@ PrefabFiles = {
 	"ivorypillow",
     "catcoonden_placer",
     "healingpill",
-    "hallucipill",
+    "headachepill",
     "feferegenbuff"
 }
 
@@ -59,8 +59,8 @@ Assets = {
     Asset("ATLAS", "images/inventoryimages/healingpill.xml"),
     Asset("IMAGE", "images/inventoryimages/healingpill.tex"),
 
-    Asset("ATLAS", "images/inventoryimages/hallucipill.xml"),
-    Asset("IMAGE", "images/inventoryimages/hallucipill.tex"),
+    Asset("ATLAS", "images/inventoryimages/headachepill.xml"),
+    Asset("IMAGE", "images/inventoryimages/headachepill.tex"),
 
     Asset("ATLAS", "images/inventoryimages/catcoonden.xml"),
     Asset("IMAGE", "images/inventoryimages/catcoonden.tex"),
@@ -118,6 +118,10 @@ TUNING.IVORYPILLOW_FREEZERATE = .04
 TUNING.IVORYPILLOW_COLDNESS = 2
 TUNING.IVORYPILLOW_SLEEPINESS = 5
 
+TUNING.HEALINGPILL_TICK_RATE = 0.6
+TUNING.HEALINGPILL_DURATION = 30
+TUNING.HEALINGPILL_TICK_VALUE = 1
+TUNING.HEALINGPILL_STACK_SIZE = 1
 
 
 --Adds the vitality meter
@@ -266,7 +270,7 @@ AddClassPostConstruct("widgets/statusdisplays", StatusPostConstruct)
 -- The character select screen lines
 STRINGS.CHARACTER_TITLES.fefe = "睡觉达人"
 STRINGS.CHARACTER_NAMES.fefe = "fefe"
-STRINGS.CHARACTER_DESCRIPTIONS.fefe = "嗜睡如命\n气血稀薄，但好勇斗狠\n药不离身\n酷爱小猫"
+STRINGS.CHARACTER_DESCRIPTIONS.fefe = "*嗜睡如命\n*酷爱小猫\n*药不离身\n*气血稀薄，但好勇斗狠"
 STRINGS.CHARACTER_QUOTES.fefe = "\"让我再睡一会儿\""
 
 -- Custom speech strings
@@ -281,24 +285,24 @@ STRINGS.NAMES.PILLOW = "枕头"
 STRINGS.NAMES.ICEPILLOW = "夏日枕"
 STRINGS.NAMES.FURRYPILLOW = "小猫枕"
 STRINGS.NAMES.IVORYPILLOW = "龙枕"
-STRINGS.NAMES.HEALINGPILL = "布洛芬"
-STRINGS.NAMES.HALLUCIPILL = "摇头丸"
+STRINGS.NAMES.HEALINGPILL = "连花清瘟"
+STRINGS.NAMES.HEADACHEPILL = "布洛芬"
 
 --item desc (what happens when you click on it)
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.PILLOW = "我想我很清醒"
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.ICEPILLOW = "我想我很清醒"
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.FURRYPILLOW = "我想我很清醒"
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.IVORYPILLOW = "我想我很清醒"
-STRINGS.CHARACTERS.GENERIC.DESCRIBE.HEALINGPILL = "这东西有副作用"
-STRINGS.CHARACTERS.GENERIC.DESCRIBE.HALLUCIPILL = "我还是不要碰这个比较好"
+STRINGS.CHARACTERS.GENERIC.DESCRIBE.HEALINGPILL = "令人作呕"
+STRINGS.CHARACTERS.GENERIC.DESCRIBE.HEADACHEPILL = "令人作呕"
 
 --item desc (what happens when ike clicks on it)
 STRINGS.CHARACTERS.FEFE.DESCRIBE.PILLOW = "我不要离开它！"
 STRINGS.CHARACTERS.FEFE.DESCRIBE.ICEPILLOW = "清凉地睡上一觉！"
 STRINGS.CHARACTERS.FEFE.DESCRIBE.FURRYPILLOW = "适合在我的头下！"
 STRINGS.CHARACTERS.FEFE.DESCRIBE.IVORYPILLOW = "朕的龙枕！"
-STRINGS.CHARACTERS.FEFE.DESCRIBE.HEALINGPILL = "吃一片就不痛了"
-STRINGS.CHARACTERS.FEFE.DESCRIBE.HALLUCIPILL = "吃了会做奇怪的梦"
+STRINGS.CHARACTERS.FEFE.DESCRIBE.HEALINGPILL = "我的病体需要它"
+STRINGS.CHARACTERS.FEFE.DESCRIBE.HEADACHEPILL = "吃了头就不痛了"
 
 --Recipetab for fefe
 CUSTOM_RECIPETABS["FEFE"] = { str = "FEFE", sort = 999, icon_atlas = "images/avatars/avatar_fefe.xml",
@@ -338,21 +342,24 @@ AddRecipe("catcoonden", {Ingredient("coontail", 3),Ingredient
     1.5,
     nil,
     nil, "fefe", "images/inventoryimages/catcoonden.xml", "catcoonden.tex") --the image path must not be absolute
-AddRecipe("healingpill", {Ingredient("cutgrass", 1)}, CUSTOM_RECIPETABS.FEFE, TECH.NONE, nil, nil,
+AddRecipe("healingpill", {Ingredient("petals", 3), Ingredient("poop", 2), Ingredient("healingsalve", 1)},
+    CUSTOM_RECIPETABS.FEFE, TECH
+.NONE, nil,
     nil,
     nil,
+    4,
     "fefe","images/inventoryimages/healingpill.xml")
-AddRecipe("hallucipill", {Ingredient("cutgrass", 1)}, CUSTOM_RECIPETABS.FEFE, TECH.NONE, nil, nil,
+AddRecipe("headachepill", {Ingredient("cutgrass", 1)}, CUSTOM_RECIPETABS.FEFE, TECH.NONE, nil, nil,
     nil,
-    nil,
-    "fefe","images/inventoryimages/hallucipill.xml")
+    4,
+    "fefe","images/inventoryimages/headachepill.xml")
 --Recipe desc
 STRINGS.RECIPE_DESC.PILLOW = "我之慰藉"
 STRINGS.RECIPE_DESC.ICEPILLOW = "我之所好"
 STRINGS.RECIPE_DESC.FURRYPILLOW = "我之挚爱"
 STRINGS.RECIPE_DESC.IVORYPILLOW = "我之天命"
-STRINGS.RECIPE_DESC.HEALINGPILL = "止疼名药"
-STRINGS.RECIPE_DESC.HALLUCIPILL = "通往极乐"
+STRINGS.RECIPE_DESC.HEALINGPILL = "专治感冒"
+STRINGS.RECIPE_DESC.HEADACHEPILL = "止疼名药"
 
 -- Add mod character to mod character list. Also specify a gender. Possible genders are MALE, FEMALE, ROBOT, NEUTRAL, and PLURAL.
 AddModCharacter("fefe", "FEMALE")

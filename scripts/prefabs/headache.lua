@@ -2,8 +2,8 @@ local assets =
 {
     Asset("ANIM", "anim/spider_gland_salve.zip"),
 
-    Asset("ATLAS", "images/inventoryimages/hallucipill.xml"),
-    Asset("IMAGE", "images/inventoryimages/hallucipill.tex"),
+    Asset("ATLAS", "images/inventoryimages/headachepill.xml"),
+    Asset("IMAGE", "images/inventoryimages/headachepill.tex"),
 }
 
 local function fn()
@@ -33,7 +33,7 @@ local function fn()
     inst:AddComponent("inspectable")
 
     inst:AddComponent("inventoryitem")
-    inst.components.inventoryitem.atlasname = "images/inventoryimages/hallucipill.xml"
+    inst.components.inventoryitem.atlasname = "images/inventoryimages/headachepill.xml"
 
     inst:AddComponent("edible")
     inst.components.edible.healthvalue = 100
@@ -43,4 +43,4 @@ local function fn()
     return inst
 end
 
-return Prefab("hallucipill", fn, assets)
+return Prefab("headachepill", fn, assets)

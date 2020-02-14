@@ -38,8 +38,8 @@ local function fn()
         return inst
     end
 
-    inst:AddComponent("stackable")
-    inst.components.stackable.maxsize = TUNING.STACK_SIZE_SMALLITEM
+--    inst:AddComponent("stackable")
+--    inst.components.stackable.maxsize = TUNING.HEALINGPILL_STACK_SIZE
 
     inst:AddComponent("inspectable")
 

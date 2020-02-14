@@ -2,7 +2,7 @@ local function OnTick(inst, target)
     if target.components.health ~= nil and
         not target.components.health:IsDead() and
         not target:HasTag("playerghost") then
-        target.components.health:DoDelta(7, nil, "healingpill")
+        target.components.health:DoDelta(TUNING.HEALINGPILL_TICK_VALUE, nil, "healingpill")
     else
         inst.components.debuff:Stop()
     end
@@ -11,7 +11,7 @@ end
 local function OnAttached(inst, target)
     inst.entity:SetParent(target.entity)
     inst.Transform:SetPosition(0, 0, 0) --in case of loading
-    inst.task = inst:DoPeriodicTask(TUNING.JELLYBEAN_TICK_RATE, OnTick, nil, target)
+    inst.task = inst:DoPeriodicTask(TUNING.HEALINGPILL_TICK_RATE, OnTick, nil, target)
     inst:ListenForEvent("death", function()
         inst.components.debuff:Stop()
     end, target)
@@ -25,9 +25,9 @@ end
 
 local function OnExtended(inst, target)
     inst.components.timer:StopTimer("feferegenover")
-    inst.components.timer:StartTimer("feferegenover", TUNING.JELLYBEAN_DURATION)
+    inst.components.timer:StartTimer("feferegenover", TUNING.HEALINGPILL_DURATION)
     inst.task:Cancel()
-    inst.task = inst:DoPeriodicTask(TUNING.JELLYBEAN_TICK_RATE, OnTick, nil, target)
+    inst.task = inst:DoPeriodicTask(TUNING.HEALINGPILL_TICK_RATE, OnTick, nil, target)
 end
 
 local function fn()
@@ -56,7 +56,7 @@ local function fn()
     inst.components.debuff.keepondespawn = true
 
     inst:AddComponent("timer")
-    inst.components.timer:StartTimer("feferegenover", TUNING.JELLYBEAN_DURATION)
+    inst.components.timer:StartTimer("feferegenover", TUNING.HEALINGPILL_DURATION)
     inst:ListenForEvent("timerdone", OnTimerDone)
 
     return inst
