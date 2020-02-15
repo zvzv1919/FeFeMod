@@ -8,6 +8,7 @@ end
 local function oncurrentvitality(self, current)
     self.inst.current_vitality:set(current)
 end
+
 --
 local function onratescale(self, ratescale)
     self.inst.ratescale_vitality:set(ratescale)
@@ -47,12 +48,12 @@ local Vitality = Class(function(self, inst)
     self.maxvitality = 199
     self.currentvitality = self.maxvitality
 
---    self.mode = VITALITY_MODE_INVITALITY
+    --    self.mode = VITALITY_MODE_INVITALITY
 
     self.rate = 0
     self.ratescale = RATE_SCALE.NEUTRAL
     self.rate_modifier = 1
---    self.vital = true
+    --    self.vital = true
 
     self.fxtime = 0
     self.dapperness = 0
@@ -60,9 +61,9 @@ local Vitality = Class(function(self, inst)
     self.inducedinvitality = nil
     self.inducedinvitality_sources = nil
     self.night_drain_mult = 1
---    self.neg_aura_mult = 1
---    self.neg_aura_absorb = 0
---    self.dapperness_mult = 1
+    --    self.neg_aura_mult = 1
+    --    self.neg_aura_absorb = 0
+    --    self.dapperness_mult = 1
 
     self.penalty = 0
 
@@ -72,18 +73,18 @@ local Vitality = Class(function(self, inst)
 
     self.custom_rate_fn = nil
 
---    self._oldisvital = self:IsVital()
+    --    self._oldisvital = self:IsVital()
     self._oldpercent = self:GetPercent()
 
     self.inst:StartUpdatingComponent(self)
---    self:RecalcGhostDrain()
+    --    self:RecalcGhostDrain()
 
---    self.inst:ListenForEvent("changearea", OnChangeArea)
+    --    self.inst:ListenForEvent("changearea", OnChangeArea)
 end,
-nil,
+    nil,
     {
-        maxvitality=onmaxvitality,
-        currentvitality=oncurrentvitality,
+        maxvitality = onmaxvitality,
+        currentvitality = oncurrentvitality,
         ratescale = onratescale
     })
 --end,
@@ -151,7 +152,7 @@ end
 function Vitality:RecalculatePenalty()
     local penalty = 0
 
-    for k,v in pairs(self.vitality_penalties) do
+    for k, v in pairs(self.vitality_penalties) do
         penalty = penalty + v
     end
 
@@ -167,17 +168,17 @@ function Vitality:OnSave()
     {
         current = self.currentvitality,
         max = self.maxvitality
---        vital = self.vital,
---        mode = self.mode,
+        --        vital = self.vital,
+        --        mode = self.mode,
     }
 end
 
 function Vitality:OnLoad(data)
---    if data.vital ~= nil then
---        self.vital = data.vital
---    end
+    --    if data.vital ~= nil then
+    --        self.vital = data.vital
+    --    end
 
---    self.mode = data.mode or 0
+    --    self.mode = data.mode or 0
 
     if data.current ~= nil then
         self.currentvitality = data.current
@@ -209,8 +210,7 @@ end
 
 function Vitality:GetDebugString()
     return string.format("%2.2f / %2.2f at %2.4f. Penalty %2.2f", self.currentvitality, self.maxvitality, self.rate,
-        self
-    .penalty)
+        self.penalty)
 end
 
 function Vitality:SetMax(amount)
@@ -267,60 +267,64 @@ function Vitality:DoDelta(delta, overtime)
     self.currentvitality = math.min(math.max(self.currentvitality + delta, 0), self.maxvitality - self.maxvitality * self.penalty)
 
     -- must calculate it due to inducedinvitality ...
---    local percent_ignoresinduced = self.currentvitality / self.maxvitality
---    if self.mode == VITALITY_MODE_INVITALITY then
---        if self.vital and percent_ignoresinduced <= TUNING.VITALITY_BECOME_INVITAL_THRESH then --30
---            self.vital = false
---        elseif not self.vital and percent_ignoresinduced >= TUNING.VITALITY_BECOME_VITAL_THRESH then --35
---            self.vital = true
---        end
---    else
---        if self.vital and percent_ignoresinduced >= TUNING.VITALITY_BECOME_ENLIGHTENED_THRESH then
---            self.vital = false
---        elseif not self.vital and percent_ignoresinduced <= TUNING.VITALITY_LOSE_ENLIGHTENMENT_THRESH then
---            self.vital = true
---        end
---    end
+    --    local percent_ignoresinduced = self.currentvitality / self.maxvitality
+    --    if self.mode == VITALITY_MODE_INVITALITY then
+    --        if self.vital and percent_ignoresinduced <= TUNING.VITALITY_BECOME_INVITAL_THRESH then --30
+    --            self.vital = false
+    --        elseif not self.vital and percent_ignoresinduced >= TUNING.VITALITY_BECOME_VITAL_THRESH then --35
+    --            self.vital = true
+    --        end
+    --    else
+    --        if self.vital and percent_ignoresinduced >= TUNING.VITALITY_BECOME_ENLIGHTENED_THRESH then
+    --            self.vital = false
+    --        elseif not self.vital and percent_ignoresinduced <= TUNING.VITALITY_LOSE_ENLIGHTENMENT_THRESH then
+    --            self.vital = true
+    --        end
+    --    end
 
-    self.inst:PushEvent("vitalitydelta", { oldpercent = self._oldpercent, newpercent = self:GetPercent(), overtime =
-    overtime, vitalitymode = self.mode })
+    self.inst:PushEvent("vitalitydelta", {
+        oldpercent = self._oldpercent,
+        newpercent = self:GetPercent(),
+        overtime =
+        overtime,
+        vitalitymode = self.mode
+    })
     self._oldpercent = self:GetPercent()
 
---    if self:IsVital() ~= self._oldisvital then
---        self._oldisvital = self:IsVital()
---        if self._oldisvital then
---            if self.onVital ~= nil then
---                self.onVital(self.inst)
---            end
---            self.inst:PushEvent("govital")
---            ProfileStatsSet("went_vital", true)
---        else
---            if self.mode == VITALITY_MODE_INVITALITY then
---                if self.onInvital ~= nil then
---                    self.onInvital(self.inst)
---                end
---                self.inst:PushEvent("goinvital")
---                ProfileStatsSet("went_invital", true)
---            else --self.mode == VITALITY_MODE_LUNACY
---                if self.onEnlightened ~= nil then
---                    self.onEnlightened(self.inst)
---                end
---                self.inst:PushEvent("goenlightened")
---                ProfileStatsSet("went_enlightened", true)
---            end
---        end
---    end
+    --    if self:IsVital() ~= self._oldisvital then
+    --        self._oldisvital = self:IsVital()
+    --        if self._oldisvital then
+    --            if self.onVital ~= nil then
+    --                self.onVital(self.inst)
+    --            end
+    --            self.inst:PushEvent("govital")
+    --            ProfileStatsSet("went_vital", true)
+    --        else
+    --            if self.mode == VITALITY_MODE_INVITALITY then
+    --                if self.onInvital ~= nil then
+    --                    self.onInvital(self.inst)
+    --                end
+    --                self.inst:PushEvent("goinvital")
+    --                ProfileStatsSet("went_invital", true)
+    --            else --self.mode == VITALITY_MODE_LUNACY
+    --                if self.onEnlightened ~= nil then
+    --                    self.onEnlightened(self.inst)
+    --                end
+    --                self.inst:PushEvent("goenlightened")
+    --                ProfileStatsSet("went_enlightened", true)
+    --            end
+    --        end
+    --    end
 end
 
 function Vitality:OnUpdate(dt)
-    if not (self.inst.components.health.invincible or
-            self.inst.sg:HasStateTag("sleeping") or --need this now because you are no longer invincible during sleep
+    if not ((self.inst.components.health.invincible and self.inst.sleepingbag == nil) or --updates in sleepingbag
             self.inst.is_teleporting or
             (self.ignore and self.redirect == nil)) then
         self:Recalc(dt)
     else
         --Always want to update badge
---        self:RecalcGhostDrain()
+        --        self:RecalcGhostDrain()
 
         --Disable arrows
         self.rate = 0
@@ -350,19 +354,20 @@ local DAILY_VITALITY_DRAINS =
 }
 
 function Vitality:Recalc(dt)
---    local total_dapperness = self.dapperness
---    for k, v in pairs(self.inst.components.inventory.equipslots) do
---        if v.components.equippable ~= nil then
---            total_dapperness = total_dapperness + v.components.equippable:GetDapperness(self.inst)
---        end
---    end
---
---    total_dapperness = total_dapperness * self.dapperness_mult
---
---    local dapper_delta = total_dapperness * TUNING.VITALITY_DAPPERNESS
+    --    local total_dapperness = self.dapperness
+    --    for k, v in pairs(self.inst.components.inventory.equipslots) do
+    --        if v.components.equippable ~= nil then
+    --            total_dapperness = total_dapperness + v.components.equippable:GetDapperness(self.inst)
+    --        end
+    --    end
+    --
+    --    total_dapperness = total_dapperness * self.dapperness_mult
+    --
+    --    local dapper_delta = total_dapperness * TUNING.VITALITY_DAPPERNESS
 
     local daily_vitality_drain = DAILY_VITALITY_DRAINS
     local daily_delta
+    local sleep_delta
 
     if TheWorld:HasTag("cave") then
         daily_delta = daily_vitality_drain.CAVE
@@ -375,29 +380,33 @@ function Vitality:Recalc(dt)
             daily_delta = daily_vitality_drain.DUSK
         end
     end
+    if self.inst.sg:HasStateTag("sleeping") or self.inst.sleepingbag ~= nil then
+        sleep_delta = 10
+    else
+        sleep_delta = 0
+    end
+    --    local aura_delta = 0
+    --    local x, y, z = self.inst.Transform:GetWorldPosition()
+    --    local ents = TheSim:FindEntities(x, y, z, TUNING.VITALITY_AURA_SEACH_RANGE, { "vitalityaura" }, { "FX", "NOCLICK",
+    --        "DECOR","INLIMBO" })
+    --    for i, v in ipairs(ents) do
+    --        if v.components.vitalityaura ~= nil and v ~= self.inst then
+    --            local aura_val = v.components.vitalityaura:GetAura(self.inst)
+    --            aura_delta = aura_delta + (aura_val < 0 and (self.neg_aura_absorb > 0 and self.neg_aura_absorb * -aura_val or aura_val) * self.neg_aura_mult or aura_val)
+    --        end
+    --    end
 
---    local aura_delta = 0
---    local x, y, z = self.inst.Transform:GetWorldPosition()
---    local ents = TheSim:FindEntities(x, y, z, TUNING.VITALITY_AURA_SEACH_RANGE, { "vitalityaura" }, { "FX", "NOCLICK",
---        "DECOR","INLIMBO" })
---    for i, v in ipairs(ents) do
---        if v.components.vitalityaura ~= nil and v ~= self.inst then
---            local aura_val = v.components.vitalityaura:GetAura(self.inst)
---            aura_delta = aura_delta + (aura_val < 0 and (self.neg_aura_absorb > 0 and self.neg_aura_absorb * -aura_val or aura_val) * self.neg_aura_mult or aura_val)
---        end
---    end
+    --    local mount = self.inst.components.rider:IsRiding() and self.inst.components.rider:GetMount() or nil
+    --    if mount ~= nil and mount.components.vitalityaura ~= nil then
+    --        local aura_val = mount.components.vitalityaura:GetAura(self.inst)
+    --        aura_delta = aura_delta + (aura_val < 0 and (self.neg_aura_absorb > 0 and self.neg_aura_absorb * -aura_val or aura_val) * self.neg_aura_mult or aura_val)
+    --    end
 
---    local mount = self.inst.components.rider:IsRiding() and self.inst.components.rider:GetMount() or nil
---    if mount ~= nil and mount.components.vitalityaura ~= nil then
---        local aura_val = mount.components.vitalityaura:GetAura(self.inst)
---        aura_delta = aura_delta + (aura_val < 0 and (self.neg_aura_absorb > 0 and self.neg_aura_absorb * -aura_val or aura_val) * self.neg_aura_mult or aura_val)
---    end
+    --    self:RecalcGhostDrain()
+    --    local ghost_delta = TUNING.VITALITY_GHOST_PLAYER_DRAIN * self.ghost_drain_mult
 
---    self:RecalcGhostDrain()
---    local ghost_delta = TUNING.VITALITY_GHOST_PLAYER_DRAIN * self.ghost_drain_mult
-
---    self.rate = dapper_delta + moisture_delta + daily_delta + aura_delta + ghost_delta + self.externalmodifiers:Get()
-    self.rate = daily_delta
+    --    self.rate = dapper_delta + moisture_delta + daily_delta + aura_delta + ghost_delta + self.externalmodifiers:Get()
+    self.rate = daily_delta + sleep_delta
 
     if self.custom_rate_fn ~= nil then
         --NOTE: dt param was added for wormwood's custom rate function
