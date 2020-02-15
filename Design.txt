@@ -1,9 +1,8 @@
 VITALITY（活力值）:
--high hunger
+--high hunger
 -low san
 --at night
 +yawning
-+during day
 ++when sleeping
 +when hitting/getting hit
 +++during extreme temperature
@@ -40,9 +39,7 @@ STATUE OF FELICY（自由菲神像）：
 
 Todo:
 
--Place all attributes to modmain, override TUNING.
 -Find RED methods
--component/fueled can be used to achieve the reparable attribute. check prefab/hats for example
--Check 'scripts/recipes.lua' for info on new tech tree
+-Seperate the handler for onattack and onareaattack events, add vitalitydelta in onattack event
 -make vitality badge compatible with the boatmeter
 -light effect see preparedfoods_warly.glowberrymousse

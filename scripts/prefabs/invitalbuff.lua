@@ -1,5 +1,6 @@
 local function Yawn(target, grogginess, knockoutduration)
     target.yawntask = nil
+    target.components.vitality:DoDelta(TUNING.VITALITY_YAWN)
     target:PushEvent("yawn", { grogginess = grogginess, knockoutduration = knockoutduration })
 end
 

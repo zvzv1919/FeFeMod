@@ -347,10 +347,10 @@ end
 
 local DAILY_VITALITY_DRAINS =
 {
-    DAY = 1,
-    DUSK = -2,
-    NIGHT = 3,
-    CAVE = -4,
+    DAY = 0,
+    DUSK = TUNING.VITALITY_DUSK,
+    NIGHT = TUNING.VITALITY_NIGHT,
+    CAVE = TUNING.VITALITY_CAVE,
 }
 
 function Vitality:Recalc(dt)
@@ -365,10 +365,13 @@ function Vitality:Recalc(dt)
     --
     --    local dapper_delta = total_dapperness * TUNING.VITALITY_DAPPERNESS
 
-    local daily_vitality_drain = DAILY_VITALITY_DRAINS
     local daily_delta
     local sleep_delta
+    local hunger_delta
+    local san_delta
+    local extremetemp_delta
 
+    local daily_vitality_drain = DAILY_VITALITY_DRAINS
     if TheWorld:HasTag("cave") then
         daily_delta = daily_vitality_drain.CAVE
     else
@@ -381,10 +384,26 @@ function Vitality:Recalc(dt)
         end
     end
     if self.inst.sg:HasStateTag("sleeping") or self.inst.sleepingbag ~= nil then
-        sleep_delta = 10
+        sleep_delta = TUNING.VITALITY_SLEEP
     else
         sleep_delta = 0
     end
+    if self.inst.replica.hunger:GetPercent() > TUNING.VITALITY_HUNGER_THRESHOLD then
+        hunger_delta = TUNING.VITALITY_HUNGER
+    else
+        hunger_delta = 0
+    end
+    if self.inst.replica.sanity:GetPercent() < TUNING.VITALITY_SAN_THRESHOLD then
+        san_delta = TUNING.VITALITY_SAN
+    else
+        san_delta = 0
+    end
+    if self.inst.components.temperature:GetCurrent() > 70 or self.inst.components.temperature:GetCurrent() < 0 then
+        extremetemp_delta = TUNING.VITALITY_EXTREMETEMP
+    else
+        extremetemp_delta = 0
+    end
+
     --    local aura_delta = 0
     --    local x, y, z = self.inst.Transform:GetWorldPosition()
     --    local ents = TheSim:FindEntities(x, y, z, TUNING.VITALITY_AURA_SEACH_RANGE, { "vitalityaura" }, { "FX", "NOCLICK",
@@ -406,7 +425,7 @@ function Vitality:Recalc(dt)
     --    local ghost_delta = TUNING.VITALITY_GHOST_PLAYER_DRAIN * self.ghost_drain_mult
 
     --    self.rate = dapper_delta + moisture_delta + daily_delta + aura_delta + ghost_delta + self.externalmodifiers:Get()
-    self.rate = daily_delta + sleep_delta
+    self.rate = daily_delta + sleep_delta + hunger_delta + san_delta + extremetemp_delta
 
     if self.custom_rate_fn ~= nil then
         --NOTE: dt param was added for wormwood's custom rate function
