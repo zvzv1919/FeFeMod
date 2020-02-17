@@ -41,5 +41,6 @@ Todo:
 
 -Find RED methods
 -Seperate the handler for onattack and onareaattack events, add vitalitydelta in onattack event
+-Make items bit more exclusive to fefe
 -make vitality badge compatible with the boatmeter
 -light effect see preparedfoods_warly.glowberrymousse

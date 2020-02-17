@@ -112,7 +112,8 @@ local function SayQuote(inst)
     inst.components.talker:Say(POWER_QUOTE[math.ceil(3 * math.random())])
 end
 
-local function Sleepify(inst, data)
+local function onattack(inst, data)
+    inst.components.vitality:DoDelta(TUNING.VITALITY_ATTACK)
 
     if inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS) ~= nil and inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS):HasTag("pillow") then
 
@@ -133,11 +134,40 @@ local function Sleepify(inst, data)
                         not (victim.components.fossilizable ~= nil and victim.components.fossilizable:IsFossilized()) then
                     victim.components.health.fefetask = victim:DoTaskInTime(0.01, OnPutToSleep, sleepiness)
                 end
-                inst.components.health:DoDelta(15)
-                inst.components.sanity:DoDelta(10)
-                inst.components.vitality:DoDelta(20)
             end
         end
+    end
+end
+
+local function onareaattack(inst, data)
+
+    if inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS) ~= nil and inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS):HasTag("pillow") then
+
+        local victim = data.target
+        local sleepiness = data.sleepiness == nil and TUNING.PILLOW_SLEEPINESS or data.sleepiness
+
+        if data.procsleep ~= nil and data.procsleep then
+
+            if inst.components.talker ~= nil and inst.components.talker.fefetask == nil then
+                inst.components.talker.fefetask = inst:DoTaskInTime(0.01, SayQuote, inst)
+            end
+
+            if not inst.components.health:IsDead() and IsValidVictim(victim) then
+                if victim.components.health.fefetask == nil and
+                        (TheNet:GetPVPEnabled() or not victim:HasTag("player")) and
+                        not (victim.components.freezable ~= nil and victim.components.freezable:IsFrozen()) and
+                        not (victim.components.pinnable ~= nil and victim.components.pinnable:IsStuck()) and
+                        not (victim.components.fossilizable ~= nil and victim.components.fossilizable:IsFossilized()) then
+                    victim.components.health.fefetask = victim:DoTaskInTime(0.01, OnPutToSleep, sleepiness)
+                end
+            end
+        end
+    end
+end
+
+local function OnAttacked(inst, data)
+    if inst.components.combat and inst.components.vitality then
+        inst.components.vitality:DoDelta(TUNING.VITALITY_ATTACKED)
     end
 end
 
@@ -189,9 +219,9 @@ local master_postinit = function(inst)
             inst.components.vitality:DoDelta(sanity)
         end
     end)
-
-    inst:ListenForEvent("onareaattackother", Sleepify)
-    inst:ListenForEvent("onattackother", Sleepify)
+    inst:ListenForEvent("onareaattackother", onareaattack)
+    inst:ListenForEvent("onattackother", onattack)
+    inst:ListenForEvent("attacked", OnAttacked)
 
 
     --    if inst.components.vitality ~= nil then
