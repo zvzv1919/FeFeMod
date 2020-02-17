@@ -11,7 +11,7 @@
 		<file id="2" name="swap_hat/swap_hat-2.png" width="344" height="372" pivot_x="0.540696" pivot_y="-0.131113" />
 		<file id="3" name="swap_hat/swap_hat-3.png" width="348" height="248" pivot_x="0.519898" pivot_y="0.336292" />
 	</folder>
-	<entity id="0" name="minerhat">
+	<entity id="0" name="pillcase">
 		<animation id="0" name="anim" length="34">
 			<mainline>
 				<key id="0" time="0">
