@@ -49,6 +49,36 @@ local function onunequip(inst, owner)
     end
 end
 
+local function miner_perish(inst)
+    local equippable = inst.components.equippable
+    if equippable ~= nil and equippable:IsEquipped() then
+        local owner = inst.components.inventoryitem ~= nil and inst.components.inventoryitem.owner or nil
+        if owner ~= nil then
+            local data =
+            {
+                prefab = inst.prefab,
+                equipslot = equippable.equipslot,
+            }
+            miner_turnoff(inst)
+            owner:PushEvent("torchranout", data)
+            return
+        end
+    end
+    miner_turnoff(inst)
+end
+
+local function miner_takefuel(inst)
+    if inst.components.equippable ~= nil and inst.components.equippable:IsEquipped() then
+        miner_turnon(inst)
+    end
+end
+
+local function miner_custom_init(inst)
+    inst.entity:AddSoundEmitter()
+    --waterproofer (from waterproofer component) added to pristine state for optimization
+    inst:AddTag("waterproofer")
+end
+
 local function fn()
     local inst = CreateEntity()
 
@@ -76,6 +106,9 @@ local function fn()
     inst:AddComponent("inspectable")
 
     inst:AddComponent("tradable")
+
+    inst:AddComponent("armor")
+    inst.components.armor:InitCondition(TUNING.PILLCASE_ARMOR, TUNING.PILLCASE_ABSORPTION)
 
     inst:AddComponent("equippable")
     inst.components.equippable.equipslot = EQUIPSLOTS.HEAD

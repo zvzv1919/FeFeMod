@@ -44,3 +44,4 @@ Todo:
 -Make items bit more exclusive to fefe
 -make vitality badge compatible with the boatmeter
 -light effect see preparedfoods_warly.glowberrymousse
+-Add a class postconstruct of fueled for pillcase mechanics

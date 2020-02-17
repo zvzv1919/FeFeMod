@@ -67,6 +67,9 @@ Assets = {
     Asset("ATLAS", "images/inventoryimages/catcoonden.xml"),
     Asset("IMAGE", "images/inventoryimages/catcoonden.tex"),
 
+    Asset("ATLAS", "images/inventoryimages/pillcase.xml"),
+    Asset("IMAGE", "images/inventoryimages/pillcase.tex"),
+
 }
 
 AddMinimapAtlas("images/map_icons/fefe.xml")
@@ -102,7 +105,7 @@ TUNING.VITALITY_SAN_THRESHOLD = 0.5
 
 
 TUNING.PILLOW_SLEEPTIME = TUNING.PANFLUTE_SLEEPTIME
-TUNING.PILLOW_SLEEPINESS = 2    --delaying sleeping of some creatures like spider; stronger creatures like bosses can
+TUNING.PILLOW_SLEEPINESS = 3    --delaying sleeping of some creatures like spider; stronger creatures like bosses can
 -- take several successive procs before going to sleep.
 TUNING.PILLOW_DAMAGE = 20
 TUNING.PILLOW_USES = 300
@@ -143,6 +146,8 @@ TUNING.FEFE_YAWN_INTERVAL_FIXED = 5
 TUNING.FEFE_YAWN_INTERVAL_RANDOM = 10   --dropping the modified interval below 10 will make the game unplayable
 TUNING.FEFE_YAWN_GROGGINESS = 2
 
+TUNING.PILLCASE_ARMOR = 1200
+TUNING.PILLCASE_ABSORPTION = .4
 
 --Adds the vitality meter
 local function StatusPostConstruct(self)
@@ -287,6 +292,7 @@ end
 
 AddClassPostConstruct("widgets/statusdisplays", StatusPostConstruct)
 
+
 -- The character select screen lines
 STRINGS.CHARACTER_TITLES.fefe = "睡觉达人"
 STRINGS.CHARACTER_NAMES.fefe = "fefe"
@@ -307,14 +313,16 @@ STRINGS.NAMES.FURRYPILLOW = "小猫枕"
 STRINGS.NAMES.IVORYPILLOW = "龙枕"
 STRINGS.NAMES.HEALINGPILL = "连花清瘟"
 STRINGS.NAMES.HEADACHEPILL = "布洛芬"
+STRINGS.NAMES.PILLCASE = "药罐子"
 
 --item desc (what happens when you click on it)
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.PILLOW = "我想我很清醒"
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.ICEPILLOW = "我想我很清醒"
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.FURRYPILLOW = "我想我很清醒"
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.IVORYPILLOW = "我想我很清醒"
-STRINGS.CHARACTERS.GENERIC.DESCRIBE.HEALINGPILL = "令人作呕"
-STRINGS.CHARACTERS.GENERIC.DESCRIBE.HEADACHEPILL = "令人作呕"
+STRINGS.CHARACTERS.GENERIC.DESCRIBE.HEALINGPILL = "这玩意有毒"
+STRINGS.CHARACTERS.GENERIC.DESCRIBE.HEADACHEPILL = "这玩意有毒"
+STRINGS.CHARACTERS.GENERIC.DESCRIBE.PILLCASE = "这玩意有毒"
 
 --item desc (what happens when ike clicks on it)
 STRINGS.CHARACTERS.FEFE.DESCRIBE.PILLOW = "我不要离开它！"
@@ -323,6 +331,7 @@ STRINGS.CHARACTERS.FEFE.DESCRIBE.FURRYPILLOW = "适合在我的头下！"
 STRINGS.CHARACTERS.FEFE.DESCRIBE.IVORYPILLOW = "朕的龙枕！"
 STRINGS.CHARACTERS.FEFE.DESCRIBE.HEALINGPILL = "我的病体需要它"
 STRINGS.CHARACTERS.FEFE.DESCRIBE.HEADACHEPILL = "吃了头就不痛了"
+STRINGS.CHARACTERS.FEFE.DESCRIBE.PILLCASE = "一定要记得带药"
 
 --Recipetab for fefe
 CUSTOM_RECIPETABS["FEFE"] = { str = "FEFE", sort = 999, icon_atlas = "images/avatars/avatar_fefe.xml",
@@ -373,6 +382,13 @@ AddRecipe("headachepill", {Ingredient("cutgrass", 1)}, CUSTOM_RECIPETABS.FEFE, T
     nil,
     4,
     "fefe","images/inventoryimages/headachepill.xml")
+AddRecipe("pillcase", {Ingredient("moonglass", 15), Ingredient("rope", 1), Ingredient("board", 1)},
+    CUSTOM_RECIPETABS.FEFE, TECH
+    .NONE, nil,
+    nil,
+    nil,
+    4,
+    "fefe","images/inventoryimages/healingpill.xml")
 --Recipe desc
 STRINGS.RECIPE_DESC.PILLOW = "我之慰藉"
 STRINGS.RECIPE_DESC.ICEPILLOW = "我之所好"
@@ -380,6 +396,7 @@ STRINGS.RECIPE_DESC.FURRYPILLOW = "我之挚爱"
 STRINGS.RECIPE_DESC.IVORYPILLOW = "我之天命"
 STRINGS.RECIPE_DESC.HEALINGPILL = "专治感冒"
 STRINGS.RECIPE_DESC.HEADACHEPILL = "止疼名药"
+STRINGS.RECIPE_DESC.PILLCASE = "装满药片"
 
 --Setting new random seed
 --math.randomseed(os.time())
