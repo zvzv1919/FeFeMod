@@ -9,7 +9,8 @@ PrefabFiles = {
     "healingpill",
     "headachepill",
     "feferegenbuff",
-    "invitalbuff"
+    "invitalbuff",
+	"pillcase"
 }
 
 Assets = {

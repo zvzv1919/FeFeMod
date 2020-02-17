@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="b5">
+	<folder id="0" name="swap_hat_off">
+		<file id="0" name="swap_hat_off/swap_hat_off-0.png" width="272" height="224" pivot_x="0.522792" pivot_y="-0.28571" />
+		<file id="1" name="swap_hat_off/swap_hat_off-1.png" width="256" height="216" pivot_x="0.619822" pivot_y="-0.295019" />
+		<file id="2" name="swap_hat_off/swap_hat_off-2.png" width="268" height="224" pivot_x="0.515483" pivot_y="-0.217853" />
+	</folder>
+	<folder id="1" name="swap_hat">
+		<file id="0" name="swap_hat/swap_hat-0.png" width="344" height="368" pivot_x="0.502906" pivot_y="-0.0673207" />
+		<file id="1" name="swap_hat/swap_hat-1.png" width="480" height="364" pivot_x="0.329739" pivot_y="-0.177126" />
+		<file id="2" name="swap_hat/swap_hat-2.png" width="344" height="372" pivot_x="0.540696" pivot_y="-0.131113" />
+		<file id="3" name="swap_hat/swap_hat-3.png" width="348" height="248" pivot_x="0.519898" pivot_y="0.336292" />
+	</folder>
+	<entity id="0" name="minerhat">
+		<animation id="0" name="anim" length="34">
+			<mainline>
+				<key id="0" time="0">
+					<object_ref id="0" name="swap_hat" abs_x="0" abs_y="0" abs_pivot_x="0.519898" abs_pivot_y="0.336292" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="0" key="0" z_index="1" />
+				</key>
+				<key id="1" time="34">
+					<object_ref id="0" name="swap_hat" abs_x="0" abs_y="0" abs_pivot_x="0.519898" abs_pivot_y="0.336292" abs_angle="0" abs_scale_x="1" abs_scale_y="1" abs_a="1" timeline="0" key="1" z_index="1" />
+				</key>
+			</mainline>
+			<timeline id="0" name="swap_hat">
+				<key id="0" time="0" spin="1">
+					<object folder="1" file="3" x="6.8" y="-6.4" scale_x="0.776825" scale_y="0.77681" angle="0" />
+				</key>
+				<key id="1" time="34" spin="1">
+					<object folder="1" file="3" x="6.8" y="-6.4" scale_x="0.776825" scale_y="0.77681" angle="0" />
+				</key>
+			</timeline>
+		</animation>
+	</entity>
+</spriter_data>
