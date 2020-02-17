@@ -9,14 +9,13 @@
 local assets =
 {
     Asset("ANIM", "anim/pillcase.zip"),
-    Asset("ANIM", "anim/swap_pillcase.zip"),
 
     Asset("ATLAS", "images/inventoryimages/pillcase.xml"),
     Asset("IMAGE", "images/inventoryimages/pillcase.tex"),
 }
 
 local function onequip(inst, owner)
-    owner.AnimState:OverrideSymbol("swap_hat", "hat_pillcase", "swap_hat")
+    owner.AnimState:OverrideSymbol("swap_hat", "pillcase", "swap_hat")
     owner.AnimState:Show("HAT")
     owner.AnimState:Show("HAIR_HAT")
     owner.AnimState:Hide("HAIR_NOHAT")
