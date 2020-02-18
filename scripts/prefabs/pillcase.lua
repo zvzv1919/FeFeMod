@@ -110,6 +110,15 @@ local function fn()
     inst:AddComponent("armor")
     inst.components.armor:InitCondition(TUNING.PILLCASE_ARMOR, TUNING.PILLCASE_ABSORPTION)
 
+    inst:AddComponent("fueled")
+    inst.components.fueled.fueltype = FUELTYPE.CAVE
+    inst.components.fueled.secondaryfueltype = FUELTYPE.MEDICINE
+    inst.components.fueled:InitializeFuelLevel(TUNING.MINERHAT_LIGHTTIME)
+--    inst.components.fueled:SetDepletedFn(miner_perish)
+--    inst.components.fueled:SetTakeFuelFn(miner_takefuel)
+--    inst.components.fueled:SetFirstPeriod(TUNING.TURNON_FUELED_CONSUMPTION, TUNING.TURNON_FULL_FUELED_CONSUMPTION)
+    inst.components.fueled.accepting = true
+
     inst:AddComponent("equippable")
     inst.components.equippable.equipslot = EQUIPSLOTS.HEAD
     inst.components.equippable:SetOnEquip(onequip)

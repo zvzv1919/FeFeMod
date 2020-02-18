@@ -114,9 +114,10 @@ local function fn()
     inst.components.insulator:SetInsulation(TUNING.FURRYPILLOW_INSULATION)
 
     inst:AddComponent("fueled")
-    inst.components.fueled.fueltype = FUELTYPE.USAGE
+    inst.components.fueled.fueltype = FUELTYPE.FUR
     inst.components.fueled:InitializeFuelLevel(TUNING.FURRYPILLOW_PERISHTIME)
     inst.components.fueled:SetDepletedFn(inst.Remove)
+    inst.components.fueled.accepting = true
 
     inst:AddComponent("inspectable")
 

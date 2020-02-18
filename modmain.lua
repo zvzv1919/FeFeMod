@@ -1,61 +1,61 @@
 PrefabFiles = {
-	"fefe",
-	"fefe_none",
+    "fefe",
+    "fefe_none",
     "pillow",
-	"icepillow",
-	"furrypillow",
-	"ivorypillow",
+    "icepillow",
+    "furrypillow",
+    "ivorypillow",
     "catcoonden_placer",
     "healingpill",
     "headachepill",
     "feferegenbuff",
     "invitalbuff",
-	"pillcase"
+    "pillcase"
 }
 
 Assets = {
-    Asset( "IMAGE", "images/saveslot_portraits/fefe.tex" ),
-    Asset( "ATLAS", "images/saveslot_portraits/fefe.xml" ),
+    Asset("IMAGE", "images/saveslot_portraits/fefe.tex"),
+    Asset("ATLAS", "images/saveslot_portraits/fefe.xml"),
 
-    Asset( "IMAGE", "images/selectscreen_portraits/fefe.tex" ),
-    Asset( "ATLAS", "images/selectscreen_portraits/fefe.xml" ),
-	
-    Asset( "IMAGE", "images/selectscreen_portraits/fefe_silho.tex" ),
-    Asset( "ATLAS", "images/selectscreen_portraits/fefe_silho.xml" ),
+    Asset("IMAGE", "images/selectscreen_portraits/fefe.tex"),
+    Asset("ATLAS", "images/selectscreen_portraits/fefe.xml"),
 
-    Asset( "IMAGE", "bigportraits/fefe.tex" ),
-    Asset( "ATLAS", "bigportraits/fefe.xml" ),
-	
-	Asset( "IMAGE", "images/map_icons/fefe.tex" ),
-	Asset( "ATLAS", "images/map_icons/fefe.xml" ),
-	
-	Asset( "IMAGE", "images/avatars/avatar_fefe.tex" ),
-    Asset( "ATLAS", "images/avatars/avatar_fefe.xml" ),
-	
-	Asset( "IMAGE", "images/avatars/avatar_ghost_fefe.tex" ),
-    Asset( "ATLAS", "images/avatars/avatar_ghost_fefe.xml" ),
-	
-	Asset( "IMAGE", "images/avatars/self_inspect_fefe.tex" ),
-    Asset( "ATLAS", "images/avatars/self_inspect_fefe.xml" ),
-	
-	Asset( "IMAGE", "images/names_fefe.tex" ),
-    Asset( "ATLAS", "images/names_fefe.xml" ),
-	
-	Asset( "IMAGE", "images/names_gold_fefe.tex" ),
-    Asset( "ATLAS", "images/names_gold_fefe.xml" ),
+    Asset("IMAGE", "images/selectscreen_portraits/fefe_silho.tex"),
+    Asset("ATLAS", "images/selectscreen_portraits/fefe_silho.xml"),
+
+    Asset("IMAGE", "bigportraits/fefe.tex"),
+    Asset("ATLAS", "bigportraits/fefe.xml"),
+
+    Asset("IMAGE", "images/map_icons/fefe.tex"),
+    Asset("ATLAS", "images/map_icons/fefe.xml"),
+
+    Asset("IMAGE", "images/avatars/avatar_fefe.tex"),
+    Asset("ATLAS", "images/avatars/avatar_fefe.xml"),
+
+    Asset("IMAGE", "images/avatars/avatar_ghost_fefe.tex"),
+    Asset("ATLAS", "images/avatars/avatar_ghost_fefe.xml"),
+
+    Asset("IMAGE", "images/avatars/self_inspect_fefe.tex"),
+    Asset("ATLAS", "images/avatars/self_inspect_fefe.xml"),
+
+    Asset("IMAGE", "images/names_fefe.tex"),
+    Asset("ATLAS", "images/names_fefe.xml"),
+
+    Asset("IMAGE", "images/names_gold_fefe.tex"),
+    Asset("ATLAS", "images/names_gold_fefe.xml"),
 
     Asset("ANIM", "anim/status_vitality.zip"),
 
     Asset("ATLAS", "images/inventoryimages/pillow.xml"),
     Asset("IMAGE", "images/inventoryimages/pillow.tex"),
-	
-	Asset("ATLAS", "images/inventoryimages/icepillow.xml"),
+
+    Asset("ATLAS", "images/inventoryimages/icepillow.xml"),
     Asset("IMAGE", "images/inventoryimages/icepillow.tex"),
-	
-	Asset("ATLAS", "images/inventoryimages/furrypillow.xml"),
+
+    Asset("ATLAS", "images/inventoryimages/furrypillow.xml"),
     Asset("IMAGE", "images/inventoryimages/furrypillow.tex"),
-	
-	Asset("ATLAS", "images/inventoryimages/ivorypillow.xml"),
+
+    Asset("ATLAS", "images/inventoryimages/ivorypillow.xml"),
     Asset("IMAGE", "images/inventoryimages/ivorypillow.tex"),
 
     Asset("ATLAS", "images/inventoryimages/healingpill.xml"),
@@ -69,7 +69,6 @@ Assets = {
 
     Asset("ATLAS", "images/inventoryimages/pillcase.xml"),
     Asset("IMAGE", "images/inventoryimages/pillcase.tex"),
-
 }
 
 AddMinimapAtlas("images/map_icons/fefe.xml")
@@ -82,6 +81,10 @@ local TECH = GLOBAL.TECH
 local Ingredient = GLOBAL.Ingredient
 local TUNING = GLOBAL.TUNING
 local CUSTOM_RECIPETABS = GLOBAL.CUSTOM_RECIPETABS
+local FUELTYPE = GLOBAL.FUELTYPE
+
+FUELTYPE.MEDICINE = "medicine"
+FUELTYPE.FUR = "fur"
 
 TUNING.FEFE_DAMAGE_MULTIPLIER = 1
 TUNING.FEFE_MAX_VITALITY = 100
@@ -103,25 +106,24 @@ TUNING.VITALITY_EXTREMETEMP = 1
 TUNING.VITALITY_HUNGER_THRESHOLD = 0.7
 TUNING.VITALITY_SAN_THRESHOLD = 0.5
 
-
 TUNING.PILLOW_SLEEPTIME = TUNING.PANFLUTE_SLEEPTIME
-TUNING.PILLOW_SLEEPINESS = 3    --delaying sleeping of some creatures like spider; stronger creatures like bosses can
+TUNING.PILLOW_SLEEPINESS = 3 --delaying sleeping of some creatures like spider; stronger creatures like bosses can
 -- take several successive procs before going to sleep.
-TUNING.PILLOW_DAMAGE = 20
-TUNING.PILLOW_USES = 300
+TUNING.PILLOW_DAMAGE = 24
+TUNING.PILLOW_USES = 500
 TUNING.PILLOW_SLEEPIFYRATE = .2
 TUNING.PILLOW_INSULATION = TUNING.INSULATION_SMALL
 
-TUNING.FURRYPILLOW_DAMAGE = 20
+TUNING.FURRYPILLOW_DAMAGE = 24
 TUNING.FURRYPILLOW_HITRANGE = 2 * TUNING.WHIP_RANGE
 TUNING.FURRYPILLOW_SLEEPIFYRATE = .15
 TUNING.FURRYPILLOW_AOE = 4
 TUNING.FURRYPILLOW_AOE_DMGMULT = .25
-TUNING.FURRYPILLOW_PERISHTIME = TUNING.WALRUSHAT_PERISHTIME/2
+TUNING.FURRYPILLOW_PERISHTIME = 480 * 5
 TUNING.FURRYPILLOW_INSULATION = TUNING.INSULATION_MED
 
 TUNING.ICEPILLOW_INSULATION = TUNING.INSULATION_LARGE
-TUNING.ICEPILLOW_PERISHTIME = TUNING.PERISH_FAST
+TUNING.ICEPILLOW_PERISHTIME = 480 * 5
 TUNING.ICEPILLOW_DAMAGE = 50
 TUNING.ICEPILLOW_FREEZERATE = .25
 TUNING.ICEPILLOW_COLDNESS = 1
@@ -131,7 +133,7 @@ TUNING.IVORYPILLOW_HITRANGE = TUNING.WHIP_RANGE
 TUNING.IVORYPILLOW_SLEEPIFYRATE = .07
 TUNING.IVORYPILLOW_AOE = 5
 TUNING.IVORYPILLOW_AOE_DMGMULT = .25
-TUNING.IVORYPILLOW_PERISHTIME = TUNING.WALRUSHAT_PERISHTIME
+TUNING.IVORYPILLOW_PERISHTIME = 480 * 15
 TUNING.IVORYPILLOW_INSULATION = TUNING.INSULATION_LARGE
 TUNING.IVORYPILLOW_FREEZERATE = .04
 TUNING.IVORYPILLOW_COLDNESS = 2
@@ -143,7 +145,7 @@ TUNING.HEALINGPILL_TICK_VALUE = 1
 TUNING.HEALINGPILL_STACK_SIZE = 1
 
 TUNING.FEFE_YAWN_INTERVAL_FIXED = 5
-TUNING.FEFE_YAWN_INTERVAL_RANDOM = 10   --dropping the modified interval below 10 will make the game unplayable
+TUNING.FEFE_YAWN_INTERVAL_RANDOM = 10 --dropping the modified interval below 10 will make the game unplayable
 TUNING.FEFE_YAWN_GROGGINESS = 2
 
 TUNING.PILLCASE_ARMOR = 1200
@@ -152,10 +154,10 @@ TUNING.PILLCASE_ABSORPTION = .4
 --Adds the vitality meter
 local function StatusPostConstruct(self)
     local VitalityBadge = require "widgets/vitalitybadge"
---    local HungerBadge = require "widgets/hungerbadge"
+    --    local HungerBadge = require "widgets/hungerbadge"
 
     local function OnSetPlayerModeFefe(inst, self)
-        self.modetaskfefe=nil
+        self.modetaskfefe = nil
         if self.fefebrain ~= nil and self.onvitalitydelta == nil then
             self.onvitalitydelta = function(owner, data) self:VitalityDelta(data) end
             self.inst:ListenForEvent("vitalitydelta", self.onvitalitydelta, self.owner)
@@ -164,7 +166,7 @@ local function StatusPostConstruct(self)
     end
 
     local function OnSetGhostModeFefe(inst, self)
-        self.modetaskfefe=nil
+        self.modetaskfefe = nil
         if self.onvitalitydelta ~= nil then
             self.inst:RemoveEventCallback("vitalitydelta", self.onvitalitydelta, self.owner)
             self.onvitalitydelta = nil
@@ -175,11 +177,11 @@ local function StatusPostConstruct(self)
         if self.fefebrain == nil then
             self.fefebrain = self:AddChild(VitalityBadge(self.owner))
             self.fefebrain:SetPosition(-80, -40, 0)
---            TODO:vitalitydelta(data), GetVitality(),SetVitalityPercent() change "sanitydelta" to "vitalitydelta"
+            --            TODO:vitalitydelta(data), GetVitality(),SetVitalityPercent() change "sanitydelta" to "vitalitydelta"
             if self.isghostmode then
                 self.fefebrain:Hide()
             elseif self.modetask == nil and self.onvitalitydelta == nil then
-                    self.onvitalitydelta = function(owner, data) self:VitalityDelta(data) end
+                self.onvitalitydelta = function(owner, data) self:VitalityDelta(data) end
                 self.inst:ListenForEvent("vitalitydelta", self.onvitalitydelta, self.owner)
                 self.fefebrain:GetVitality()
             end
@@ -198,8 +200,8 @@ local function StatusPostConstruct(self)
         end
     end
 
-    local oldSetGhostMode=self.SetGhostMode
-    self.SetGhostMode=function(self, ghostmode)
+    local oldSetGhostMode = self.SetGhostMode
+    self.SetGhostMode = function(self, ghostmode)
         oldSetGhostMode(self, ghostmode)
         if ghostmode then
             if self.owner:HasTag("vitality") then
@@ -218,8 +220,8 @@ local function StatusPostConstruct(self)
         self.modetaskfefe = self.inst:DoTaskInTime(0, ghostmode and OnSetGhostModeFefe or OnSetPlayerModeFefe, self)
     end
 
-    local oldShowStatusNumbers=self.ShowStatusNumbers
-    self.ShowStatusNumbers=function(self)
+    local oldShowStatusNumbers = self.ShowStatusNumbers
+    self.ShowStatusNumbers = function(self)
         oldShowStatusNumbers(self)
         self.fefebrain.num:Show()
         if self.fefebrain ~= nil then
@@ -227,8 +229,8 @@ local function StatusPostConstruct(self)
         end
     end
 
-    local oldHideStatusNumbers=self.HideStatusNumbers
-    self.HideStatusNumbers=function(self)
+    local oldHideStatusNumbers = self.HideStatusNumbers
+    self.HideStatusNumbers = function(self)
         oldHideStatusNumbers(self)
         self.fefebrain.num:Hide()
         if self.fefebrain ~= nil then
@@ -236,39 +238,39 @@ local function StatusPostConstruct(self)
         end
     end
 
---TODO:Remove the redundant if statement
---    local oldSetSanityPercent=self.SetSanityPercent
-    self.SetVitalityPercent=function(self,pct)
---        oldSetSanityPercent(self, pct)
+    --TODO:Remove the redundant if statement
+    --    local oldSetSanityPercent=self.SetSanityPercent
+    self.SetVitalityPercent = function(self, pct)
+        --        oldSetSanityPercent(self, pct)
         self.fefebrain:SetPercent(pct, self.owner:GetMaxVitality(), self.owner:GetVitalityPenalty())
 
-            if self.owner.replica.sanity:IsInsane() or self.owner.replica.sanity:IsEnlightened() then
-                self.fefebrain:StartWarning()
-            else
-                self.fefebrain:StopWarning()
-            end
+        if self.owner.replica.sanity:IsInsane() or self.owner.replica.sanity:IsEnlightened() then
+            self.fefebrain:StartWarning()
+        else
+            self.fefebrain:StopWarning()
+        end
     end
 
---    local oldSanityDelta=self.SanityDelta
---    function self:SanityDelta(data)
---        oldSanityDelta(self,data)
---       self:VitalityDelta(data)
---        if self.owner:HasTag("vitality") then
---            if not data.overtime then
---                if data.newpercent > data.oldpercent then
---                    self.fefebrain:PulseGreen()
---                    TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/sanity_up")
---                elseif data.newpercent < data.oldpercent then
---                    self.fefebrain:PulseRed()
---                    TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/sanity_down")
---                end
---            end
---        end
---    end
+    --    local oldSanityDelta=self.SanityDelta
+    --    function self:SanityDelta(data)
+    --        oldSanityDelta(self,data)
+    --       self:VitalityDelta(data)
+    --        if self.owner:HasTag("vitality") then
+    --            if not data.overtime then
+    --                if data.newpercent > data.oldpercent then
+    --                    self.fefebrain:PulseGreen()
+    --                    TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/sanity_up")
+    --                elseif data.newpercent < data.oldpercent then
+    --                    self.fefebrain:PulseRed()
+    --                    TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/sanity_down")
+    --                end
+    --            end
+    --        end
+    --    end
 
     function self:VitalityDelta(data)
---        self:SetVitalityPercent(data.newpercent)
---        oldSanityDelta(self,data)
+        --        self:SetVitalityPercent(data.newpercent)
+        --        oldSanityDelta(self,data)
         if not data.overtime then
             if data.newpercent > data.oldpercent then
                 self.fefebrain:PulseGreen()
@@ -280,11 +282,11 @@ local function StatusPostConstruct(self)
         end
     end
 
-    self.fefebrain=nil
-    self.onvitalitydelta=nil
-    self.modetaskfefe=nil --for initialization when entering the game scene
+    self.fefebrain = nil
+    self.onvitalitydelta = nil
+    self.modetaskfefe = nil --for initialization when entering the game scene
 
---    self:AddVitality()
+    --    self:AddVitality()
     if self.owner:HasTag("vitality") then
         self:AddVitality()
     end
@@ -292,6 +294,58 @@ end
 
 AddClassPostConstruct("widgets/statusdisplays", StatusPostConstruct)
 
+local function CoontailPostInit(inst)
+    inst:AddComponent("fuel")
+    inst.components.fuel.fuelvalue = TUNING.MED_LARGE_FUEL
+    inst.components.fuel.fueltype = FUELTYPE.FUR
+
+    inst:AddComponent("edible")
+    inst.components.edible.healthvalue = TUNING.HEALING_TINY
+    inst.components.edible.hungervalue = 0
+end
+
+AddPrefabPostInit("coontail", CoontailPostInit)
+
+local function FueledPostInit(self)
+    local oldTakeFuelItem = self.TakeFuelItem
+    self.TakeFuelItem = function(self, item, doer)
+        if not self.inst:HasTag("pillcase") then
+            oldTakeFuelItem(self, item, doer)
+            return
+        end
+        --  self is pillcase
+        if self:CanAcceptFuelItem(item) then
+            local oldsection = self:GetCurrentSection()
+
+            local wetmult = item:GetIsWet() and TUNING.WET_FUEL_PENALTY or 1
+            local masterymult = doer ~= nil and doer.components.fuelmaster ~= nil and doer.components.fuelmaster:GetBonusMult(item, self.inst) or 1
+            self:DoDelta(item.components.fuel.fuelvalue * self.bonusmult * wetmult * masterymult, doer)
+
+            local fuelvalue = 0
+            if item.components.fuel ~= nil then
+                fuelvalue = item.components.fuel.fuelvalue
+                item.components.fuel:Taken(self.inst)
+            end
+            item:Remove()
+
+            if item:HasTag("lightbattery") then
+            end
+            if item:HasTag("healingpill") then
+            end
+            if item:HasTag("headachepill") then
+            end
+
+--            if self.ontakefuelfn ~= nil then
+--                self.ontakefuelfn(self.inst)
+--            end
+            self.inst:PushEvent("takefuel", { fuelvalue = fuelvalue })
+
+            return true
+        end
+    end
+end
+
+AddComponentPostInit('fueled', FueledPostInit)
 
 -- The character select screen lines
 STRINGS.CHARACTER_TITLES.fefe = "睡觉达人"
@@ -334,61 +388,61 @@ STRINGS.CHARACTERS.FEFE.DESCRIBE.HEADACHEPILL = "吃了头就不痛了"
 STRINGS.CHARACTERS.FEFE.DESCRIBE.PILLCASE = "一定要记得带药"
 
 --Recipetab for fefe
-CUSTOM_RECIPETABS["FEFE"] = { str = "FEFE", sort = 999, icon_atlas = "images/avatars/avatar_fefe.xml",
-    icon = "avatar_fefe.tex", owner_tag =
-"fefe" }
+CUSTOM_RECIPETABS["FEFE"] = {
+    str = "FEFE",
+    sort = 999,
+    icon_atlas = "images/avatars/avatar_fefe.xml",
+    icon = "avatar_fefe.tex",
+    owner_tag =
+    "fefe"
+}
 
 --Recipe for fefe's items
-AddRecipe("pillow", {Ingredient("pigskin", 1),Ingredient("silk", 3)}, CUSTOM_RECIPETABS.FEFE, TECH.NONE, nil, nil, nil, nil,
+AddRecipe("pillow", { Ingredient("pigskin", 1), Ingredient("silk", 3) }, CUSTOM_RECIPETABS.FEFE, TECH.NONE, nil, nil, nil, nil,
     "fefe", "images/inventoryimages/pillow.xml")
-AddRecipe("icepillow", {Ingredient("pillow", 1, "images/inventoryimages/pillow.xml"),Ingredient("icehat", 1), Ingredient
-("gears", 1)}, CUSTOM_RECIPETABS
-.FEFE, TECH
-.SCIENCE_TWO,
+AddRecipe("icepillow", {
+    Ingredient("pillow", 1, "images/inventoryimages/pillow.xml"), Ingredient("icehat", 1), Ingredient("gears", 1)
+}, CUSTOM_RECIPETABS.FEFE, TECH.SCIENCE_TWO,
     nil,
     nil, nil,
     nil,
     "fefe", "images/inventoryimages/icepillow.xml")
-AddRecipe("furrypillow", {Ingredient("pillow", 1, "images/inventoryimages/pillow.xml"),Ingredient("beefalohat", 1), Ingredient("whip",1)}, CUSTOM_RECIPETABS
-.FEFE,
-    TECH
-.SCIENCE_TWO,
+AddRecipe("furrypillow", { Ingredient("pillow", 1, "images/inventoryimages/pillow.xml"), Ingredient("beefalohat", 1), Ingredient("whip", 1) }, CUSTOM_RECIPETABS.FEFE,
+    TECH.SCIENCE_TWO,
     nil,
     nil, nil,
     nil,
     "fefe", "images/inventoryimages/furrypillow.xml")
-AddRecipe("ivorypillow", {Ingredient("furrypillow", 1, "images/inventoryimages/furrypillow.xml"),Ingredient
-("icepillow", 1, "images/inventoryimages/icepillow.xml"),Ingredient("minotaurhorn", 1)},
-    CUSTOM_RECIPETABS
-.FEFE, TECH.MAGIC_THREE, nil,
+AddRecipe("ivorypillow", {
+    Ingredient("furrypillow", 1, "images/inventoryimages/furrypillow.xml"), Ingredient("icepillow", 1, "images/inventoryimages/icepillow.xml"), Ingredient("minotaurhorn", 1)
+},
+    CUSTOM_RECIPETABS.FEFE, TECH.MAGIC_THREE, nil,
     nil,
     nil,
     nil, "fefe", "images/inventoryimages/ivorypillow.xml")
-AddRecipe("catcoonden", {Ingredient("coontail", 3),Ingredient
-("boards", 3),Ingredient("pumpkin", 3)},
-    CUSTOM_RECIPETABS
-    .FEFE, TECH.NONE, "catcoonden_placer",
+AddRecipe("catcoonden", {
+    Ingredient("coontail", 3), Ingredient("boards", 3), Ingredient("pumpkin", 3)
+},
+    CUSTOM_RECIPETABS.FEFE, TECH.NONE, "catcoonden_placer",
     1.5,
     nil,
     nil, "fefe", "images/inventoryimages/catcoonden.xml", "catcoonden.tex") --the image path must not be absolute
-AddRecipe("healingpill", {Ingredient("petals", 3), Ingredient("poop", 2), Ingredient("healingsalve", 1)},
-    CUSTOM_RECIPETABS.FEFE, TECH
-.NONE, nil,
+AddRecipe("healingpill", { Ingredient("petals", 3), Ingredient("poop", 2), Ingredient("healingsalve", 1) },
+    CUSTOM_RECIPETABS.FEFE, TECH.NONE, nil,
     nil,
     nil,
     4,
-    "fefe","images/inventoryimages/healingpill.xml")
-AddRecipe("headachepill", {Ingredient("cutgrass", 1)}, CUSTOM_RECIPETABS.FEFE, TECH.NONE, nil, nil,
+    "fefe", "images/inventoryimages/healingpill.xml")
+AddRecipe("headachepill", { Ingredient("cutgrass", 1) }, CUSTOM_RECIPETABS.FEFE, TECH.NONE, nil, nil,
     nil,
     4,
-    "fefe","images/inventoryimages/headachepill.xml")
-AddRecipe("pillcase", {Ingredient("moonglass", 15), Ingredient("rope", 1), Ingredient("board", 1)},
-    CUSTOM_RECIPETABS.FEFE, TECH
-    .NONE, nil,
+    "fefe", "images/inventoryimages/headachepill.xml")
+AddRecipe("pillcase", { Ingredient("moonglass", 15), Ingredient("rope", 1), Ingredient("board", 1) },
+    CUSTOM_RECIPETABS.FEFE, TECH.NONE, nil,
     nil,
     nil,
     4,
-    "fefe","images/inventoryimages/healingpill.xml")
+    "fefe", "images/inventoryimages/healingpill.xml")
 --Recipe desc
 STRINGS.RECIPE_DESC.PILLOW = "我之慰藉"
 STRINGS.RECIPE_DESC.ICEPILLOW = "我之所好"

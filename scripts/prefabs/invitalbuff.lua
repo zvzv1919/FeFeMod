@@ -1,5 +1,9 @@
 local function Yawn(target, grogginess, knockoutduration)
     target.yawntask = nil
+    if target.sg:HasStateTag("sleeping") or target.sleepingbag ~= nil then
+        --Do nothing if player is already sleeping
+        return
+    end
     target.components.vitality:DoDelta(TUNING.VITALITY_YAWN)
     target:PushEvent("yawn", { grogginess = grogginess, knockoutduration = knockoutduration })
 end
@@ -9,12 +13,17 @@ local function OnTick(inst, target)
     if target.components.vitality ~= nil and
             not target.components.health:IsDead() and
             not target:HasTag("playerghost") then
-        local current_vitality = target.current_vitality:value()    --this field is required for any inst with the
-        -- vitality
-        -- component
-        local vitalitymult = math.max(1, math.min(9,(current_vitality - 15) / 5))
-        local knockoutduration = math.max(0,(20 - current_vitality) / 2)
-    local grogginess = math.max(0, (50 - current_vitality) / 10 )
+        local current_vitality = target.current_vitality:value() --this field is required for any inst with the
+        -- vitality > 80,nothing happens
+        --  60-80, start to yawn
+        --  20-60, start to feel groggy, frequency of yawning increases
+        --  0-20, fall asleep after yawning
+        if current_vitality > 80 then
+            return
+        end
+        local vitalitymult = math.max(1, math.min(9, (current_vitality - 15) / 5))
+        local knockoutduration = math.max(0, (20 - current_vitality) / 2)
+        local grogginess = math.max(0, (60 - current_vitality) / 12)
 
         if target.yawntask == nil then
             target.yawntask = target:DoTaskInTime(math.random() * TUNING.FEFE_YAWN_INTERVAL_RANDOM * vitalitymult,
@@ -36,7 +45,7 @@ end
 
 local function OnTimerDone(inst, data)
     if data.name == "invitalover" then
-        inst.components.debuff:Extend ()
+        inst.components.debuff:Extend()
     end
 end
 
