@@ -136,8 +136,8 @@ TUNING.IVORYPILLOW_AOE_DMGMULT = .25
 TUNING.IVORYPILLOW_PERISHTIME = 480 * 15
 TUNING.IVORYPILLOW_INSULATION = TUNING.INSULATION_LARGE
 TUNING.IVORYPILLOW_FREEZERATE = .04
-TUNING.IVORYPILLOW_COLDNESS = 2
-TUNING.IVORYPILLOW_SLEEPINESS = 5
+TUNING.IVORYPILLOW_COLDNESS = 10
+TUNING.IVORYPILLOW_SLEEPINESS = 10
 
 TUNING.HEALINGPILL_TICK_RATE = 0.6
 TUNING.HEALINGPILL_DURATION = 30
@@ -319,25 +319,35 @@ local function FueledPostInit(self)
 
             local wetmult = item:GetIsWet() and TUNING.WET_FUEL_PENALTY or 1
             local masterymult = doer ~= nil and doer.components.fuelmaster ~= nil and doer.components.fuelmaster:GetBonusMult(item, self.inst) or 1
-            self:DoDelta(item.components.fuel.fuelvalue * self.bonusmult * wetmult * masterymult, doer)
-
+            self.flavor = nil
+            local r,g,b,a
+            if item:HasTag("lightbattery") then
+                self.flavor = "light"
+                r,g,b,a = 100/255, 100/255, 100/255, 1
+            elseif item:HasTag("healingpill") then
+                self.flavor = "heal"
+                r,g,b,a = 255/255, 0/255, 0/255, 1
+            elseif item:HasTag("headachepill") then --should only accept these three
+                self.flavor = "vital"
+                r,g,b,a = 0/255, 255/255, 0/255, 1
+            end
+            if self.inst.flavor ~= nil and self.inst.flavor == self.flavor then
+                self:DoDelta(item.components.fuel.fuelvalue * self.bonusmult * wetmult * masterymult, doer)
+            else
+                self:MakeEmpty()
+                self.inst.flavor = self.flavor
+                self:DoDelta(item.components.fuel.fuelvalue * self.bonusmult * wetmult * masterymult, doer)
+                self.inst.AnimState:SetMultColour(r,g,b,a)
+            end
             local fuelvalue = 0
             if item.components.fuel ~= nil then
                 fuelvalue = item.components.fuel.fuelvalue
                 item.components.fuel:Taken(self.inst)
             end
             item:Remove()
-
-            if item:HasTag("lightbattery") then
-            end
-            if item:HasTag("healingpill") then
-            end
-            if item:HasTag("headachepill") then
-            end
-
---            if self.ontakefuelfn ~= nil then
---                self.ontakefuelfn(self.inst)
---            end
+            --            if self.ontakefuelfn ~= nil then
+            --                self.ontakefuelfn(self.inst)
+            --            end
             self.inst:PushEvent("takefuel", { fuelvalue = fuelvalue })
 
             return true

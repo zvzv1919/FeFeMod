@@ -30,6 +30,8 @@ local function fn()
     inst.AnimState:SetBuild("healingpill")
     inst.AnimState:PlayAnimation("idle")
 
+    inst:AddTag("healingpill")
+
     MakeInventoryFloatable(inst, "small", 0.05, 0.95)
 
     inst.entity:SetPristine()
@@ -42,6 +44,10 @@ local function fn()
 --    inst.components.stackable.maxsize = TUNING.HEALINGPILL_STACK_SIZE
 
     inst:AddComponent("inspectable")
+
+    inst:AddComponent("fuel")
+    inst.components.fuel.fuelvalue = 30
+    inst.components.fuel.fueltype = FUELTYPE.MEDICINE
 
     inst:AddComponent("inventoryitem")
     inst.components.inventoryitem.atlasname = "images/inventoryimages/healingpill.xml"

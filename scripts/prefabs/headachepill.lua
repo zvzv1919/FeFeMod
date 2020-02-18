@@ -19,6 +19,8 @@ local function fn()
     inst.AnimState:SetBuild("spider_gland_salve")
     inst.AnimState:PlayAnimation("idle")
 
+    inst:AddTag("headachepill")
+
     MakeInventoryFloatable(inst, "small", 0.05, 0.95)
 
     inst.entity:SetPristine()
@@ -31,6 +33,10 @@ local function fn()
     inst.components.stackable.maxsize = TUNING.STACK_SIZE_SMALLITEM
 
     inst:AddComponent("inspectable")
+
+    inst:AddComponent("fuel")
+    inst.components.fuel.fuelvalue = 30
+    inst.components.fuel.fueltype = FUELTYPE.MEDICINE
 
     inst:AddComponent("inventoryitem")
     inst.components.inventoryitem.atlasname = "images/inventoryimages/headachepill.xml"

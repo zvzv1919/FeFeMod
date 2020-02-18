@@ -14,8 +14,8 @@ local assets =
     Asset("IMAGE", "images/inventoryimages/pillcase.tex"),
 }
 
-local function onequip(inst, owner)
-    owner.AnimState:OverrideSymbol("swap_hat", "pillcase", "swap_hat")
+local function onequip(inst, owner, swap_symbol)
+    owner.AnimState:OverrideSymbol("swap_hat", "pillcase", swap_symbol or "swap_hat")
     owner.AnimState:Show("HAT")
     owner.AnimState:Show("HAIR_HAT")
     owner.AnimState:Hide("HAIR_NOHAT")
@@ -49,7 +49,25 @@ local function onunequip(inst, owner)
     end
 end
 
-local function miner_perish(inst)
+local function pillcase_switch(inst, swap_symbol)
+    local owner = inst.components.inventoryitem ~= nil and inst.components.inventoryitem.owner or nil
+    if owner ~= nil and inst.components.equippable ~= nil and inst.components.equippable:IsEquipped() then
+        onequip(inst, owner, swap_symbol)
+    end
+    if swap_symbol == "swap_hat_pff" then
+        inst.components.fueled:StopConsuming()
+        if inst._light ~= nil then
+            if inst._light:IsValid() then
+                inst._light:Remove()
+            end
+            inst._light = nil
+            local soundemitter = owner ~= nil and owner.SoundEmitter or inst.SoundEmitter
+            soundemitter:PlaySound("dontstarve/common/minerhatOut")
+        end
+    end
+end
+
+local function pillcase_perish(inst)
     local equippable = inst.components.equippable
     if equippable ~= nil and equippable:IsEquipped() then
         local owner = inst.components.inventoryitem ~= nil and inst.components.inventoryitem.owner or nil
@@ -59,12 +77,12 @@ local function miner_perish(inst)
                 prefab = inst.prefab,
                 equipslot = equippable.equipslot,
             }
-            miner_turnoff(inst)
+            pillcase_switch(inst, "swap_hat_off")
             owner:PushEvent("torchranout", data)
             return
         end
     end
-    miner_turnoff(inst)
+    pillcase_switch(inst, "swap_hat_off")
 end
 
 local function miner_takefuel(inst)
@@ -91,6 +109,7 @@ local function fn()
     inst.AnimState:SetBank("pillcase")
     inst.AnimState:SetBuild("pillcase")
     inst.AnimState:PlayAnimation("anim")
+    inst.AnimState:SetMultColour(unpack({ 255 / 255, 255 / 255, 255 / 255, 0.5 }))
 
     inst:AddTag("pillcase")
     inst:AddTag("hat")
@@ -113,10 +132,11 @@ local function fn()
     inst:AddComponent("fueled")
     inst.components.fueled.fueltype = FUELTYPE.CAVE
     inst.components.fueled.secondaryfueltype = FUELTYPE.MEDICINE
-    inst.components.fueled:InitializeFuelLevel(TUNING.MINERHAT_LIGHTTIME)
---    inst.components.fueled:SetDepletedFn(miner_perish)
---    inst.components.fueled:SetTakeFuelFn(miner_takefuel)
---    inst.components.fueled:SetFirstPeriod(TUNING.TURNON_FUELED_CONSUMPTION, TUNING.TURNON_FULL_FUELED_CONSUMPTION)
+    inst.components.fueled:InitializeFuelLevel(60)
+    inst.components.fueled:MakeEmpty()
+    inst.components.fueled:SetDepletedFn(pillcase_perish)
+    --    inst.components.fueled:SetTakeFuelFn(miner_takefuel)
+    --    inst.components.fueled:SetFirstPeriod(TUNING.TURNON_FUELED_CONSUMPTION, TUNING.TURNON_FULL_FUELED_CONSUMPTION)
     inst.components.fueled.accepting = true
 
     inst:AddComponent("equippable")
